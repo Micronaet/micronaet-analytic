@@ -39,7 +39,7 @@ from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
 
 
 _logger = logging.getLogger(__name__)
-class AccountAnalyticLine(orm.Model):
+'''class AccountAnalyticLine(orm.Model):
     """ Add extra information for manage partner in analytic line
     """
     
@@ -48,7 +48,7 @@ class AccountAnalyticLine(orm.Model):
     _columns = {
         'ts_partner_id': fields.many2one('res.partner', 'Partner'),
         }
-'''
+
 class HrAnalyticTimesheet(orm.Model):
     """ Add extra information for manage partner in analytic line
         Override function are inserted for keep reporting 

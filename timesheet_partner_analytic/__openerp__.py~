@@ -32,9 +32,12 @@
         'hr',
         'analytic',
         'hr_timesheet',
+        'report',
         ],
     'init_xml': [],
-    'data': [],
+    'data': [
+        'partner_view.xml',
+        ],
     'demo_xml': [],
     'active': False,
     'installable': True,

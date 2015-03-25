@@ -39,10 +39,9 @@ from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
 
 
 _logger = logging.getLogger(__name__)
-
-class AccountAnalyticLine(orm.Model):
-    ''' Add extra information for manage partner in analytic line
-    '''
+'''class AccountAnalyticLine(orm.Model):
+    """ Add extra information for manage partner in analytic line
+    """
     
     _inherit = 'account.analytic.line'
 
@@ -51,10 +50,10 @@ class AccountAnalyticLine(orm.Model):
         }
 
 class HrAnalyticTimesheet(orm.Model):
-    ''' Add extra information for manage partner in analytic line
+    """ Add extra information for manage partner in analytic line
         Override function are inserted for keep reporting 
         TODO test reporting bug (only first element work)
-    '''
+    """
     
     _inherit = 'hr.analytic.timesheet'
 
@@ -93,7 +92,15 @@ class HrAnalyticTimesheet(orm.Model):
         res = super(HrAnalyticTimesheet, self).write(
             cr, uid, ids, vals, context=context)
         return res
-         
+    '''
+
+class AnalyticEntriesReport(orm.Model):
+    ''' Set float for hours
+    '''
+    _inherit = "analytic.entries.report"
+    
+    _columns = {
+        'unit_amount': fields.float('Unit Amount', readonly=True),
+        }
     
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
-

@@ -32,6 +32,8 @@
         'hr',
         'analytic',
         'hr_timesheet',
+        'hr_timesheet_invoice',
+        'report',
         ],
     'init_xml': [],
     'data': [

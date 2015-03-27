@@ -34,10 +34,12 @@
         'hr_timesheet',
         'hr_timesheet_invoice',
         'report',
+        'report_aeroo',
         ],
     'init_xml': [],
     'data': [
         'partner_view.xml',
+        'report/timesheet_report.xml',
         ],
     'demo_xml': [],
     'active': False,

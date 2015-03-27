@@ -103,4 +103,11 @@ class AnalyticEntriesReport(orm.Model):
         'unit_amount': fields.float('Unit Amount', readonly=True),
         }
     
+class CalendarEvent(orm.Model):
+
+    _inherit = "calendar.event"
+    
+    _columns = {
+        'partner_id':fields.many2one('res.partner', 'Partner'),
+        }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

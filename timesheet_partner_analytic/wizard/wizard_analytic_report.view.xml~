@@ -1,0 +1,62 @@
+<?xml version="1.0" ?>
+<openerp>
+  <data>
+       <!-- mrp.production.status.wizard -->
+       <record id="account_analytic_report_wizard_view" model="ir.ui.view">
+            <field name="name">Analytic report</field>
+            <field name="model">account.analytic.report.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Analytic report" version="7.0">
+                    <head>
+                        <button string="Cancel" special="cancel" colspan="2" />                   
+                        <button name="print_report" type="object" string="Print" icon="gtk-print" colspan="2" class="oe_highlight"/>
+                    </head>
+                    <sheet>
+                        <group colspan="4" col="4">
+                            <field name="account_id" />
+                            <field name="partner_id" invisible="1" /> <!--TODO-->
+                            <field name="from_date" />
+                            <field name="to_date" />
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+      </record>
+      
+      <record id="account_analytic_report_wizard_action" model="ir.actions.act_window">
+        <field name="name">Analytic report wizard</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">account.analytic.report.wizard</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+      </record>
+
+    <act_window
+        id="act_account_analytic_report_wizard"
+        name="Analytic report wizard"
+        view_mode="form"
+        target="new"
+        res_model="account.analytic.report.wizard"
+        key2="client_action_multi"
+        src_model="hr.analytic.timesheet"/>
+
+   <menuitem name="Wizard report"
+          parent="hr_attendance.menu_hr_time_tracking" 
+          id="menu_analytic_report_wizard_action" 
+          action="account_analytic_report_wizard_action" 
+          sequence="20" />
+
+    
+    <!--TODO create from account.analytic.line
+    <act_window
+        id="act_account_analytic_report_wizard"
+        name="Analytic report wizard"
+        view_mode="form"
+        target="new"
+        res_model="account.analytic.report.wizard"
+        key2="client_action_multi"
+        src_model="hr.analytic.timesheet"/>-->
+  </data>
+</openerp>
+

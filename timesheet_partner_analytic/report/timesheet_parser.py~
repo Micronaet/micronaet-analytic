@@ -26,61 +26,57 @@ from openerp.report.report_sxw import rml_parse
 
 
 class Parser(report_sxw.rml_parse):
-    counters = {}
+    accounts = {}
     
-    def __init__(self, cr, uid, name, context):
-        
+    def __init__(self, cr, uid, name, context):        
         super(Parser, self).__init__(cr, uid, name, context)
         self.localcontext.update({
-            'get_address': self.get_address,
-            'get_extra_data': self.get_extra_data,
-            'get_partner_list': self.get_partner_list,
-            'get_counter': self.get_counter,
-            'set_counter': self.set_counter,
+            'get_objects': self.get_objects,
+            'get_lines': self.get_lines,
         })
 
-    def get_counter(self, name):
-        ''' Get counter with name passed (else create an empty)
+    def get_objects(self, objects, data):
+        ''' Get master objects
         '''
-        if name not in self.counters:
-            self.counters[name] = False
-        return self.counters[name]
+        if data is None:
+            data = {}
 
-    def set_counter(self, name, value):
-        ''' Set counter with name with value passed
-        '''
-        self.counters[name] = value
-        return "" # empty so no write in module
+        # Reset report dict:
+        self.accounts = {}        
+        timesheet_pool = self.pool.get('hr.analytic.timesheet')
 
-    def get_partner_list(self, o):
-        ''' Get list of partner address, depend on extra_field value
-        '''
-        res = [o.partner_id]
-        if o.extra_address in ('contact', 'partner') and o.partner_ids:
-            res.extend(o.partner_ids)
-        return res
+        if data.get('wizard', False): # form wizard:
+            # get list from wizard elements
+            domain = []
+            if data['from_date']:
+                domain.append(
+                    ('date', '>=', "%s 00:00:00" % data['from_date']))
+            if data['to_date']:
+                domain.append(
+                    ('date', '<=', "%s 00:00:00" % data['to_date']))
+            if data.get('account_id', False):
+                domain.append(
+                    ('account_id', '=', data.account_id))
+            timesheet_ids = timesheet_pool.search(self.cr, self.uid, 
+                domain, )# order='date')
+        else:
+            # get list of selected items
+            timesheet_ids = [obj.id for obj in objects]
+                
 
-    def get_address(self, partner_proxy):
-        ''' Get partner address with passed browse obj
-        '''
-        return "%s - %s - %s" % (
-            partner_proxy.street or '',
-            partner_proxy.zip or '',
-            partner_proxy.city or '',
-            )
+        for timesheet in timesheet_pool.browse(
+                self.cr, self.uid, timesheet_ids):
+            if timesheet.account_id.name not in self.accounts:
+                self.accounts[timesheet.account_id.name] = []
+            self.accounts[timesheet.account_id.name].append(timesheet)
+        return sorted(self.accounts.keys())
 
-    def get_extra_data(self, partner_proxy):
-        ''' Get partner extra data with passed browse obj
+    def get_lines(self, account):
+        ''' Get master objects
         '''
-        return "Phone: %s\nFax: %s\nE-mail: %s\n%s" % (
-            partner_proxy.phone or '',
-            partner_proxy.fax or '',
-            partner_proxy.email or '',
-            "%s%s" % (
-                "P.IVA: %s\n" % (
-                    partner_proxy.vat if partner_proxy.vat else ""),
-                "C.F.: %s" % (
-                    partner_proxy.fiscalcode if partner_proxy.fiscalcode else \
-                    ""), )
-            )
+        if account not in self.accounts:
+            return []
+            
+        return sorted(self.accounts[account], key=lambda a: a.date)
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

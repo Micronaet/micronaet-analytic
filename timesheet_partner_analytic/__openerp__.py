@@ -33,6 +33,7 @@
         'analytic',
         'hr_timesheet',
         'hr_timesheet_invoice',
+        'hr_attendance',
         'report',
         'report_aeroo',
         ],
@@ -40,6 +41,7 @@
     'data': [
         'partner_view.xml',
         'report/timesheet_report.xml',
+        'wizard/wizard_analytic_report.view.xml',
         ],
     'demo_xml': [],
     'active': False,

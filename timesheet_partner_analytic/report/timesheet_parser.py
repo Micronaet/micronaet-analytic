@@ -26,20 +26,57 @@ from openerp.report.report_sxw import rml_parse
 
 
 class Parser(report_sxw.rml_parse):
-    counters = {}
+    accounts = {}
     
-    def __init__(self, cr, uid, name, context):
-        
+    def __init__(self, cr, uid, name, context):        
         super(Parser, self).__init__(cr, uid, name, context)
         self.localcontext.update({
-            #'get_counter': self.get_counter,
+            'get_objects': self.get_objects,
+            'get_lines': self.get_lines,
         })
 
-    """def get_counter(self, name):
-        ''' Get counter with name passed (else create an empty)
+    def get_objects(self, objects, data):
+        ''' Get master objects
         '''
-        if name not in self.counters:
-            self.counters[name] = False
-        return self.counters[name]"""
+        if data is None:
+            data = {}
+
+        # Reset report dict:
+        self.accounts = {}        
+        timesheet_pool = self.pool.get('hr.analytic.timesheet')
+
+        if data.get('wizard', False): # form wizard:
+            # get list from wizard elements
+            domain = []
+            if data['from_date']:
+                domain.append(
+                    ('date', '>=', "%s 00:00:00" % data['from_date']))
+            if data['to_date']:
+                domain.append(
+                    ('date', '<=', "%s 00:00:00" % data['to_date']))
+            if data.get('account_id', False):
+                domain.append(
+                    ('account_id', '=', data['account_id']))
+            timesheet_ids = timesheet_pool.search(self.cr, self.uid, 
+                domain, )# order='date')
+        else:
+            # get list of selected items
+            timesheet_ids = [obj.id for obj in objects]
+                
+
+        for timesheet in timesheet_pool.browse(
+                self.cr, self.uid, timesheet_ids):
+            if timesheet.account_id.name not in self.accounts:
+                self.accounts[timesheet.account_id.name] = []
+            self.accounts[timesheet.account_id.name].append(timesheet)
+        return sorted(self.accounts.keys())
+
+    def get_lines(self, account):
+        ''' Get master objects
+        '''
+        if account not in self.accounts:
+            return []
+            
+        return sorted(self.accounts[account], key=lambda a: a.date)
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

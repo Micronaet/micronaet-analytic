@@ -17,33 +17,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ###############################################################################
+import wizard_report_status
 
 
-{
-    'name': 'Customer to analytic analysis',
-    'version': '0.0.1',
-    'category': 'Generic Modules/Batch load',
-    'description': """
-        Add customer information for filter analytic account lines 
-        """,
-    'author': 'Micronaet s.r.l.',
-    'website': 'http://www.micronaet.it',
-    'depends': [
-        'hr',
-        'analytic',
-        'hr_timesheet',
-        'hr_timesheet_invoice',
-        'report',
-        'report_aeroo',
-        ],
-    'init_xml': [],
-    'data': [
-        'partner_view.xml',
-        'report/timesheet_report.xml',
-        'wizard/wizard_analytic_report.view.xml',
-        ],
-    'demo_xml': [],
-    'active': False,
-    'installable': True,
-    }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

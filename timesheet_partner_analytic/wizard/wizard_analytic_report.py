@@ -68,6 +68,10 @@ class mrp_production_status_wizard(osv.osv_memory):
         }
         
     _columns = {
+        'report_type': fields.selection([
+            ('analytic', 'Analytic report'),
+            ('timesheet', 'Timesheet report'),
+            ], 'Report type', required=True),
         'account_id': fields.many2one('account.analytic.account', 'Account'),
         'partner_id': fields.many2one('res.partner', 'Partner'),
         'from_date': fields.date('From', help='Date >='),
@@ -75,6 +79,7 @@ class mrp_production_status_wizard(osv.osv_memory):
         }
         
     _defaults = {
+        'report_type': lambda *x: 'analytic',
         'to_date': datetime.now().strftime(DEFAULT_SERVER_DATE_FORMAT),
         }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

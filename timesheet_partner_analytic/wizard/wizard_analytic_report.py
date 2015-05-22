@@ -55,10 +55,10 @@ class mrp_production_status_wizard(osv.osv_memory):
         wiz_proxy = self.browse(cr, uid, ids)[0]
 
         datas = {}
-        if datas['report_type'] == 'analytic':
+        if wiz_proxy.report_type == 'analytic':
             report_name = 'partner_timesheet_report'
         else:
-            report_name = 'partner_timesheet_report' # TODO  change
+            report_name = 'hours_analytic_timesheet_report'
             
         datas['wizard'] = True # started from wizard
         datas['from_date'] = wiz_proxy.from_date or False
@@ -79,12 +79,31 @@ class mrp_production_status_wizard(osv.osv_memory):
             ], 'Report type', required=True),
         'account_id': fields.many2one('account.analytic.account', 'Account'),
         'partner_id': fields.many2one('res.partner', 'Partner'),
+        
         'from_date': fields.date('From', help='Date >='),
         'to_date': fields.date('To', help='Date <'),
+        
+        'month': fields.selection([
+            ('01', 'January'),
+            ('02', 'February'),
+            ('03', 'March'),
+            ('04', 'April'),
+            ('05', 'May'),
+            ('06', 'June'),
+            ('07', 'July'),
+            ('08', 'Agoust'),
+            ('09', 'September'),
+            ('10', 'October'),
+            ('11', 'November'),
+            ('12', 'December'),
+            ], 'Month'),
+        'year': fields.integer('Year'),        
         }
         
     _defaults = {
         'report_type': lambda *x: 'analytic',
         'to_date': datetime.now().strftime(DEFAULT_SERVER_DATE_FORMAT),
+        'month': datetime.now().strftime("%m"), 
+        'year': datetime.now().strftime("%Y"),
         }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

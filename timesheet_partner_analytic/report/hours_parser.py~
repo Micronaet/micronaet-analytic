@@ -38,7 +38,7 @@ class Parser(report_sxw.rml_parse):
     def format_hours(self, value):
         ''' From float to HH:MM value'''
         if value:
-            return "%6.1f" % (
+            return "%6.2f" % (
                 value,
                 )
         return '/'    

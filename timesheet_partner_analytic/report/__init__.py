@@ -22,6 +22,7 @@
 #
 ##############################################################################
 
-import timesheet_parser
+from . import timesheet_parser
+from . import hours_parser
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -54,16 +54,18 @@ class mrp_production_status_wizard(osv.osv_memory):
         ''' 
         wiz_proxy = self.browse(cr, uid, ids)[0]
 
-        datas = {}
         if wiz_proxy.report_type == 'analytic':
             report_name = 'partner_timesheet_report'
         else:
-            report_name = 'hours_analytic_timesheet_report'
+            report_name = 'timesheet_hours_report'
             
+        datas = {}
         datas['wizard'] = True # started from wizard
         datas['from_date'] = wiz_proxy.from_date or False
         datas['to_date'] = wiz_proxy.to_date or False
         datas['account_id'] = wiz_proxy.account_id.id or False
+        datas['year'] = wiz_proxy.year or False
+        datas['month'] = wiz_proxy.month or False
         #datas['partner_id'] = wiz_proxy.partner_id.id or False
 
         return {

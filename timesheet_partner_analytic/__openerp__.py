@@ -20,7 +20,7 @@
 
 
 {
-    'name': 'Customer to analytic analysis',
+    'name': 'Report wizard for customer to analytic analysis and timesheet',
     'version': '0.0.1',
     'category': 'Generic Modules/Batch load',
     'description': """
@@ -41,6 +41,7 @@
     'data': [
         'partner_view.xml',
         'report/timesheet_report.xml',
+        'report/hours_report.xml',
         'wizard/wizard_analytic_report.view.xml',
         ],
     'demo_xml': [],

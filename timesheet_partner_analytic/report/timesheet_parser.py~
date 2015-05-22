@@ -31,9 +31,56 @@ class Parser(report_sxw.rml_parse):
     def __init__(self, cr, uid, name, context):        
         super(Parser, self).__init__(cr, uid, name, context)
         self.localcontext.update({
+            # Analytic report:
             'get_objects': self.get_objects,
             'get_lines': self.get_lines,
+            
+            # Timesheet report:
+            'get_timesheet': self.get_timesheet,            
         })
+
+    def get_timesheet(self, data):
+        ''' Get master objects
+        '''
+        if data is None:
+            data = {}
+
+        # Reset report dict:
+        self.accounts = {}        
+        timesheet_pool = self.pool.get('hr.analytic.timesheet')
+
+        res = {}
+        # TODO report work only from wizard
+        if data.get('wizard', False): # form wizard:
+            # get list from wizard elements
+            domain = []
+            from_date = "%s-%s-01" % (
+                data['year'], 
+                data['month'])
+            to_date = "%s-%s-01" % (
+                data['year'], 
+                '%02d' % (
+                    int(data['month']) + 1) if data['month'] != '12' else '01',
+                )
+            
+            domain.extend([
+                ('date', '>=', from_date), 
+                ('date', '<', to_date), ])
+                
+            timesheet_ids = timesheet_pool.search(
+                self.cr, self.uid, domain)
+                
+            for timesheet in timesheet_pool.browse(
+                    self.cr, self.uid, timesheet_ids):
+                if timesheet.user_id.name not in res:    
+                    res[timesheet.user_id.name] = [
+                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                        ]
+                res[timesheet.user_id.name][
+                    int(timesheet.date[5:7])] += timesheet.unit_amount
+        return res
 
     def get_objects(self, objects, data):
         ''' Get master objects
@@ -56,7 +103,7 @@ class Parser(report_sxw.rml_parse):
                     ('date', '<=', "%s 00:00:00" % data['to_date']))
             if data.get('account_id', False):
                 domain.append(
-                    ('account_id', '=', data.account_id))
+                    ('account_id', '=', data['account_id']))
             timesheet_ids = timesheet_pool.search(self.cr, self.uid, 
                 domain, )# order='date')
         else:

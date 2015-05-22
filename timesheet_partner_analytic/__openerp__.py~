@@ -33,6 +33,7 @@
         'analytic',
         'hr_timesheet',
         'hr_timesheet_invoice',
+        'hr_attendance',
         'report',
         'report_aeroo',
         ],

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="view_account_analytic_account_date_form">
+            <field name="name">account.analytic.account.date.form</field>
+            <field name="model">account.analytic.account</field>
+            <field name="inherit_id" ref="analytic.view_account_analytic_account_form"/>
+            <field name="arch" type="xml">
+                <field name="code" position="after">
+                    <field name="date_start" />
+                    <field name="date" />
+                </field>
+            </field>
+        </record> 
+
+        <!--<record model="ir.ui.view" id="view_account_analytic_account_date_tree">
+            <field name="name">account.analytic.account.date.tree</field>
+            <field name="model">account.analytic.account</field>
+            <field name="inherit_id" ref="analytic.view_account_analytic_account_tree"/>
+            <field name="arch" type="xml">
+                <field name="template_id" position="after">
+                    <field name="date_start" />
+                    <field name="date" />
+                </field>
+            </field>
+        </record> -->
+    </data>
+</openerp>        

@@ -38,6 +38,60 @@ from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
 
 _logger = logging.getLogger(__name__)
 
+# Override report:
+class analytic_entries_report(osv.osv):
+    _name = "analytic.entries.report"
+    _description = "Analytic Entries Statistics"
+    _auto = False
+    
+    _columns = {
+        'date': fields.date('Date', readonly=True),
+        'user_id': fields.many2one('res.users', 'User',readonly=True),
+        'name': fields.char('Description', size=64, readonly=True),
+        'partner_id': fields.many2one('res.partner', 'Partner'),
+        'company_id': fields.many2one('res.company', 'Company', required=True),
+        'currency_id': fields.many2one('res.currency', 'Currency', required=True),
+        'account_id': fields.many2one('account.analytic.account', 'Account', required=False),
+        'general_account_id': fields.many2one('account.account', 'General Account', required=True),
+        'journal_id': fields.many2one('account.analytic.journal', 'Journal', required=True),
+        'move_id': fields.many2one('account.move.line', 'Move', required=True),
+        'product_id': fields.many2one('product.product', 'Product', required=True),
+        'product_uom_id': fields.many2one('product.uom', 'Product Unit of Measure', required=True),
+        'amount': fields.float('Amount', readonly=True),
+        'unit_amount': fields.integer('Unit Amount', readonly=True),
+        'nbr': fields.integer('# Entries', readonly=True),  # TDE FIXME master: rename into nbr_entries
+    }
+    def init(self, cr):
+        tools.drop_view_if_exists(cr, 'analytic_entries_report')
+        cr.execute("""
+            create or replace view analytic_entries_report as (
+                 select
+                     min(a.id) as id,
+                     count(distinct a.id) as nbr,
+                     a.date as date,
+                     a.user_id as user_id,
+                     a.name as name,
+                     a.analytic_partner_id as partner_id,
+                     a.company_id as company_id,
+                     a.currency_id as currency_id,
+                     a.account_id as account_id,
+                     a.general_account_id as general_account_id,
+                     a.journal_id as journal_id,
+                     a.move_id as move_id,
+                     a.product_id as product_id,
+                     a.product_uom_id as product_uom_id,
+                     sum(a.amount) as amount,
+                     sum(a.unit_amount) as unit_amount
+                 from
+                     account_analytic_line a, account_analytic_account analytic
+                 where analytic.id = a.account_id
+                 group by
+                     a.date, a.user_id,a.name,a.analytic_partner_id,a.company_id,a.currency_id,
+                     a.account_id,a.general_account_id,a.journal_id,
+                     a.move_id,a.product_id,a.product_uom_id
+            )
+        """)
+
 
 class AccountAnalyticLine(orm.Model):
     ''' Add extra field to analytic line
@@ -45,7 +99,7 @@ class AccountAnalyticLine(orm.Model):
     _inherit = 'account.analytic.line'
     
     _columns = {
-        'partner_id': fields.many2one('res.partner', 'Partner'),
+        'analytic_partner_id': fields.many2one('res.partner', 'Partner'),
         }
 
 class HrAnalyticTimesheet(orm.Model):
@@ -56,28 +110,24 @@ class HrAnalyticTimesheet(orm.Model):
     # ----------
     # on change:
     # ----------
-    def onchange_partner_id(self, cr, uid, ids, partner_id, account_id, 
+    def onchange_partner_id(self, cr, uid, ids, analytic_partner_id, account_id, 
             context=None):
         ''' Reset account when change partner
         '''
         res = {}
-        if not account_id or not partner_id:
+        if not account_id or not analytic_partner_id:
             return res
         
         acc_partner_id = self.pool('account.analytic.account').browse(
             cr, uid, account_id, context=context).partner_id.id
          
         # Account without partner or equal to selected > nothing    
-        if not acc_partner_id or partner_id == acc_partner_id:
+        if not acc_partner_id or analytic_partner_id == acc_partner_id:
             return res
         
         # Partner different:    
         res['value'] = {}
         res['value']['account_id'] = False # Reset account        
         return res
-            
-    _columns = {
-        # Override related partner:
-        #'partner_id': fields.many2one('res.partner', 'Partner', required=True),
-        }        
+           
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 ###############################################################################
 #
 #    Copyright (C) 2001-2014 Micronaet SRL (<http://www.micronaet.it>).
@@ -18,34 +17,27 @@
 #
 ###############################################################################
 
-
 {
-    'name': 'Report wizard for customer to analytic analysis and timesheet',
-    'version': '0.0.1',
-    'category': 'Report',
-    'description': """
-        Add customer information for filter analytic account lines 
-        """,
-    'author': 'Micronaet s.r.l.',
+    'name': 'Analytic partner timesheet',
+    'version': '0.1',
+    'category': '',
+    'description': '''        
+        Add extra information and manage partner in timesheet entry
+        Add also filter in analytic lines
+        ''',
+    'author': 'Micronaet S.r.l. - Nicola Riolini',
     'website': 'http://www.micronaet.it',
+    'license': 'AGPL-3',
     'depends': [
-        'hr',
-        'analytic',
-        'hr_timesheet',
-        'hr_timesheet_invoice',
-        'hr_attendance',
-        'report',
-        'report_aeroo',
+        'base',
         ],
     'init_xml': [],
+    'demo': [],
     'data': [
+        #'security/ir.model.access.csv',    
         'partner_view.xml',
-        'report/timesheet_report.xml',
-        'report/hours_report.xml',
-        'wizard/wizard_analytic_report.view.xml',
         ],
-    'demo_xml': [],
     'active': False,
     'installable': True,
+    'auto_install': False,
     }
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

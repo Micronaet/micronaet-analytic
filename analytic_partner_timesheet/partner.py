@@ -17,35 +17,25 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ###############################################################################
+import os
+import sys
+import logging
+import openerp
+import openerp.netsvc as netsvc
+import openerp.addons.decimal_precision as dp
+from openerp.osv import fields, osv, expression, orm
+from datetime import datetime, timedelta
+from dateutil.relativedelta import relativedelta
+from openerp import SUPERUSER_ID, api
+from openerp import tools
+from openerp.tools.translate import _
+from openerp.tools.float_utils import float_round as round
+from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT, 
+    DEFAULT_SERVER_DATETIME_FORMAT, 
+    DATETIME_FORMATS_MAP, 
+    float_compare)
 
 
-{
-    'name': 'Report wizard for customer to analytic analysis and timesheet',
-    'version': '0.0.1',
-    'category': 'Report',
-    'description': """
-        Add customer information for filter analytic account lines 
-        """,
-    'author': 'Micronaet s.r.l.',
-    'website': 'http://www.micronaet.it',
-    'depends': [
-        'hr',
-        'analytic',
-        'hr_timesheet',
-        'hr_timesheet_invoice',
-        'hr_attendance',
-        'report',
-        'report_aeroo',
-        ],
-    'init_xml': [],
-    'data': [
-        'partner_view.xml',
-        'report/timesheet_report.xml',
-        'report/hours_report.xml',
-        'wizard/wizard_analytic_report.view.xml',
-        ],
-    'demo_xml': [],
-    'active': False,
-    'installable': True,
-    }
+_logger = logging.getLogger(__name__)
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

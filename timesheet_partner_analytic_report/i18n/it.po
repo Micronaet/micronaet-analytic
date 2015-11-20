@@ -1,0 +1,80 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* timesheet_partner_analytic
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-05-22 10:01+0000\n"
+"PO-Revision-Date: 2015-05-22 12:04+0100\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"Language: it\n"
+"X-Generator: Poedit 1.6.10\n"
+
+#. module: timesheet_partner_analytic
+#: model:ir.model,name:timesheet_partner_analytic.model_analytic_entries_report
+msgid "Analytic Entries Statistics"
+msgstr "Statistiche scritture analitiche"
+
+#. module: timesheet_partner_analytic
+#: model:ir.model,name:timesheet_partner_analytic.model_account_analytic_line
+msgid "Analytic Line"
+msgstr "Linea conto analitico"
+
+#. module: timesheet_partner_analytic
+#: view:account.analytic.report.wizard:timesheet_partner_analytic.account_analytic_report_wizard_view
+msgid "Analytic report"
+msgstr "Report analitico"
+
+#. module: timesheet_partner_analytic
+#: model:ir.actions.act_window,name:timesheet_partner_analytic.account_analytic_report_wizard_action
+#: model:ir.actions.act_window,name:timesheet_partner_analytic.act_account_analytic_report_wizard
+msgid "Analytic report wizard"
+msgstr "Wizard report analitico"
+
+#. module: timesheet_partner_analytic
+#: view:account.analytic.report.wizard:timesheet_partner_analytic.account_analytic_report_wizard_view
+msgid "Cancel"
+msgstr "Annulla"
+
+#. module: timesheet_partner_analytic
+#: model:ir.model,name:timesheet_partner_analytic.model_calendar_event
+msgid "Event"
+msgstr "Evento"
+
+#. module: timesheet_partner_analytic
+#: model:ir.actions.report.xml,name:timesheet_partner_analytic.aeroo_hr_analytic_hours_timesheet_report_id
+#: model:ir.actions.report.xml,name:timesheet_partner_analytic.aeroo_hr_analytic_timesheet_hours_report_id
+msgid "Hours timesheet"
+msgstr "Foglio presenze"
+
+#. module: timesheet_partner_analytic
+#: model:ir.actions.report.xml,name:timesheet_partner_analytic.aeroo_hr_analytic_timesheet_report_id
+msgid "Partner timesheet"
+msgstr "Attività cliente"
+
+#. module: timesheet_partner_analytic
+#: view:account.analytic.report.wizard:timesheet_partner_analytic.account_analytic_report_wizard_view
+msgid "Print"
+msgstr "Stampa"
+
+#. module: timesheet_partner_analytic
+#: model:ir.model,name:timesheet_partner_analytic.model_account_analytic_report_wizard
+msgid "Report analytic line"
+msgstr "Riga analitica"
+
+#. module: timesheet_partner_analytic
+#: model:ir.model,name:timesheet_partner_analytic.model_hr_analytic_timesheet
+msgid "Timesheet Line"
+msgstr "Riga Timesheet"
+
+#. module: timesheet_partner_analytic
+#: model:ir.ui.menu,name:timesheet_partner_analytic.menu_analytic_report_wizard_action
+msgid "Wizard report"
+msgstr "Wizard report"

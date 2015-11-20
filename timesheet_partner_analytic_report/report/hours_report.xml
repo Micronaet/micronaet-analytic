@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <record id="aeroo_hr_analytic_hours_timesheet_report_id" model="ir.actions.report.xml">
+            <field name="name">Hours timesheet</field>
+            <field name="type">ir.actions.report.xml</field>
+            <field name="model">hr.analytic.timesheet</field>
+            <field name="report_name">timesheet_hours_report</field>
+            <field name="report_type">aeroo</field>
+            <field name="in_format">oo-odt</field>
+            <field name="parser_loc">timesheet_partner_analytic/report/hours_parser.py</field>
+            <field name="report_rml">timesheet_partner_analytic/report/hours.odt</field>
+            <field name="parser_state">loc</field>
+            <field name="tml_source">file</field>
+        </record>
+
+        <ir_set>
+            <field eval="'action'" name="key"/>
+            <field eval="'client_print_multi'" name="key2"/>
+            <field eval="['hr.analytic.timesheet']" name="models"/>
+            <field name="name">partner_analytic_hours_timesheet_report</field>
+            <field eval="'ir.actions.report.xml,'+str(aeroo_hr_analytic_hours_timesheet_report_id)" name="value"/>
+            <field eval="True" name="isobject"/>
+            <field eval="True" name="replace"/>
+        </ir_set>
+    </data>
+</openerp>
+

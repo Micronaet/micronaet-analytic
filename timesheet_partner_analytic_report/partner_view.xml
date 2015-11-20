@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <!--calendar.event-->
+        <record model="ir.ui.view" id="view_calendar_event_partner_form">
+            <field name="name">calendar.event.partner.form</field>
+            <field name="model">calendar.event</field>
+            <field name="inherit_id" ref="calendar.view_calendar_event_form"/>
+            <field name="arch" type="xml">
+                <field name="partner_ids" position="before">
+                    <field name="partner_id" />
+                </field>
+                <field name="partner_ids" position="attributes">
+                    <attribute name="invisible">1</attribute> 
+                </field>
+            </field>
+        </record> 
+        <record model="ir.ui.view" id="view_calendar_event_partner_tree">
+            <field name="name">calendar.event.partner.form</field>
+            <field name="model">calendar.event</field>
+            <field name="inherit_id" ref="calendar.view_calendar_event_tree"/>
+            <field name="arch" type="xml">
+                <field name="name" position="after">
+                    <field name="partner_id" />
+                </field>
+            </field>
+        </record> 
+    
+        <record model="ir.ui.view" id="hr_timesheet_line_product_tree">
+            <field name="name">hr.analytic.timesheet.product.tree</field>
+            <field name="model">hr.analytic.timesheet</field>
+            <field name="inherit_id" ref="hr_timesheet.hr_timesheet_line_tree"/>
+            <field name="arch" type="xml">
+                <field name="product_id" position="attributes">
+                    <attribute name="invisible">0</attribute>
+                </field>
+            </field>
+        </record> 
+        <record model="ir.ui.view" id="hr_timesheet_line_product_invoice_tree">
+            <field name="name">hr.analytic.timesheet.product.invoice.tree</field>
+            <field name="model">hr.analytic.timesheet</field>
+            <field name="inherit_id" ref="hr_timesheet_invoice.hr_timesheet_line_tree"/>
+            <field name="arch" type="xml">
+                <field name="to_invoice" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+            </field>
+        </record> 
+    </data>
+</openerp>        

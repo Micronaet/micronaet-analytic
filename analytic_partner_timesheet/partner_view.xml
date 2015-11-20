@@ -25,7 +25,7 @@
         </record>
 
         <!--'default_partner_id': partner_id-->
-        <!--<record model="ir.ui.view" id="view_hr_timesheet_line_search">
+        <record model="ir.ui.view" id="view_hr_timesheet_line_search">
             <field name="name">hr.analytic.timesheet.partner.search</field>
             <field name="model">hr.analytic.timesheet</field>
             <field name="inherit_id" ref="hr_timesheet.hr_timesheet_line_search"/>
@@ -33,8 +33,11 @@
                 <field name="account_id" position="before">
                     <field name="partner_id" />
                 </field>                
+                <filter string="Product" position="after">
+                   <filter string="Partner" icon="terp-accessories-archiver" domain="[]" context="{'group_by':'partner_id'}"/>
+                </filter>                
             </field>
-        </record>-->
+        </record>
     </data>
 </openerp>
 

@@ -30,6 +30,7 @@
     'license': 'AGPL-3',
     'depends': [    
         'base',
+        'account',
         'hr_timesheet',
         'hr_timesheet_invoice',
         ],

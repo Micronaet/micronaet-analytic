@@ -39,6 +39,15 @@ from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
 _logger = logging.getLogger(__name__)
 
 
+class AccountAnalyticLine(orm.Model):
+    ''' Add extra field to analytic line
+    '''
+    _inherit = 'account.analytic.line'
+    
+    _columns = {
+        'partner_id': fields.many2one('res.partner', 'Partner'),
+        }
+
 class HrAnalyticTimesheet(orm.Model):
     ''' Add onchange event
     '''
@@ -69,8 +78,6 @@ class HrAnalyticTimesheet(orm.Model):
             
     _columns = {
         # Override related partner:
-        'partner_id': fields.many2one('res.partner', 'Partner', required=True),
-        }
-
-        
+        #'partner_id': fields.many2one('res.partner', 'Partner', required=True),
+        }        
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

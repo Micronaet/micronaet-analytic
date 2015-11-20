@@ -28,8 +28,10 @@
     'author': 'Micronaet S.r.l. - Nicola Riolini',
     'website': 'http://www.micronaet.it',
     'license': 'AGPL-3',
-    'depends': [
+    'depends': [    
         'base',
+        'hr_timesheet',
+        'hr_timesheet_invoice',
         ],
     'init_xml': [],
     'demo': [],

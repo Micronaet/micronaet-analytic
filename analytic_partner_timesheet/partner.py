@@ -38,4 +38,39 @@ from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
 
 _logger = logging.getLogger(__name__)
 
+
+class HrAnalyticTimesheet(orm.Model):
+    ''' Add onchange event
+    '''
+    _inherit = 'hr.analytic.timesheet'
+
+    # ----------
+    # on change:
+    # ----------
+    def onchange_partner_id(self, cr, uid, ids, partner_id, account_id, 
+            context=None):
+        ''' Reset account when change partner
+        '''
+        res = {}
+        if not account_id or not partner_id:
+            return res
+        
+        acc_partner_id = self.pool('account.analytic.account').browse(
+            cr, uid, account_id, context=context).partner_id.id
+         
+        # Account without partner or equal to selected > nothing    
+        if not acc_partner_id or partner_id == acc_partner_id:
+            return res
+        
+        # Partner different:    
+        res['value'] = {}
+        res['value']['account_id'] = False # Reset account        
+        return res
+            
+    _columns = {
+        # Override related partner:
+        'partner_id': fields.many2one('res.partner', 'Partner', required=True),
+        }
+
+        
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

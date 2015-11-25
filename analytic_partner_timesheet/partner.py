@@ -38,6 +38,15 @@ from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
 
 _logger = logging.getLogger(__name__)
 
+class AccountAnalyticLine(orm.Model):
+    ''' Add extra field to analytic line
+    '''
+    _inherit = 'account.analytic.line'
+    
+    _columns = {
+        'analytic_partner_id': fields.many2one('res.partner', 'Partner'),
+        }
+
 # Override report:
 class analytic_entries_report(osv.osv):
     _name = "analytic.entries.report"
@@ -90,17 +99,8 @@ class analytic_entries_report(osv.osv):
                      a.account_id,a.general_account_id,a.journal_id,
                      a.move_id,a.product_id,a.product_uom_id
             )
-        """)
-
-
-class AccountAnalyticLine(orm.Model):
-    ''' Add extra field to analytic line
-    '''
-    _inherit = 'account.analytic.line'
-    
-    _columns = {
-        'analytic_partner_id': fields.many2one('res.partner', 'Partner'),
-        }
+        """
+        )
 
 class HrAnalyticTimesheet(orm.Model):
     ''' Add onchange event

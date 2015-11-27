@@ -63,25 +63,41 @@ class AccountAnalyticLine(orm.Model):
         # prepare for iteration on journal and accounts
         for line in self.browse(cr, uid, ids, context=context):
 
-            key = (line.account_id.id,
-                   line.account_id.company_id.id,
-                   line.account_id.pricelist_id.currency_id.id)
+       
+            # -----------------------------------------------------------------
+            # NOTE: OVERRIDE:
+            # TODO: Conf / Sale: Usa i listini per gestire i prezzi ai clienti             
+            if line.account_id.pricelist_id:
+                pricelist_id = line.account_id.pricelist_id
+                currency = pricelist_id.currency_id.id
+            else:
+                pricelist_id = \
+                    line.analytic_partner_id.property_product_pricelist
+                currency = pricelist_id.currency_id.id
+            # -----------------------------------------------------------------
+
+            key = (
+                line.account_id.id,
+                line.account_id.company_id.id,
+                currency,
+                )
             invoice_grouping.setdefault(key, []).append(line)
 
         for (key_id, company_id, currency_id
                 ), analytic_lines in invoice_grouping.items():
             # key_id is an account.analytic.account
             
-            # NOTE: Correct only here (override):
+            # -----------------------------------------------------------------
+            # NOTE: OVERRIDE:
             partner = analytic_lines[0].analytic_partner_id or analytic_lines[
                 0].account_id.partner_id  # will be the same for every line
+            # -----------------------------------------------------------------
 
             curr_invoice = self._prepare_cost_invoice(
                 cr, uid, partner, company_id, currency_id, analytic_lines, 
                 context=context)
             invoice_context = dict(
-                context,
-                lang=partner.lang,
+                context, lang=partner.lang,
                 # set force_company in context so the correct product 
                 # properties are selected (eg. income account)
                 force_company=company_id,  
@@ -98,7 +114,7 @@ class AccountAnalyticLine(orm.Model):
             invoice_lines_grouping = {}
             for analytic_line in analytic_lines:
                 account = analytic_line.account_id
-                if (not partner) or not (account.pricelist_id):
+                if (not partner) or not (pricelist_id): # 2 type of pl
                     raise osv.except_osv(
                         _('Error!'), 
                         _('Contract incomplete. Please fill in the Customer '

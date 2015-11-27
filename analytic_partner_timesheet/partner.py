@@ -73,19 +73,27 @@ class AccountAnalyticLine(orm.Model):
             # key_id is an account.analytic.account
             
             # NOTE: Correct only here (override):
-            partner = analytic_lines[0].analytic_partner_id.id or analytic_lines[0].account_id.partner_id  # will be the same for every line
+            partner = analytic_lines[0].analytic_partner_id or analytic_lines[
+                0].account_id.partner_id  # will be the same for every line
 
             curr_invoice = self._prepare_cost_invoice(
-                cr, uid, partner, company_id, currency_id, analytic_lines, context=context)
+                cr, uid, partner, company_id, currency_id, analytic_lines, 
+                context=context)
             invoice_context = dict(
                 context,
                 lang=partner.lang,
-                force_company=company_id,  # set force_company in context so the correct product properties are selected (eg. income account)
-                company_id=company_id)  # set company_id in context, so the correct default journal will be selected
-            last_invoice = invoice_obj.create(cr, uid, curr_invoice, context=invoice_context)
+                # set force_company in context so the correct product 
+                # properties are selected (eg. income account)
+                force_company=company_id,  
+                # set company_id in context, so the correct default journal 
+                # will be selected
+                company_id=company_id)  
+            last_invoice = invoice_obj.create(
+                cr, uid, curr_invoice, context=invoice_context)
             invoices.append(last_invoice)
 
-            # use key (product, uom, user, invoiceable, analytic account, journal type)
+            # use key (product, uom, user, invoiceable, analytic account, 
+            # journal type)
             # creates one invoice line per key
             invoice_lines_grouping = {}
             for analytic_line in analytic_lines:
@@ -93,7 +101,8 @@ class AccountAnalyticLine(orm.Model):
                 if (not partner) or not (account.pricelist_id):
                     raise osv.except_osv(
                         _('Error!'), 
-                        _('Contract incomplete. Please fill in the Customer and Pricelist fields for %s.') % (account.name))
+                        _('Contract incomplete. Please fill in the Customer '
+                            'and Pricelist fields for %s.') % (account.name))
 
                 if not analytic_line.to_invoice:
                     raise osv.except_osv(
@@ -102,21 +111,28 @@ class AccountAnalyticLine(orm.Model):
                             analytic_line.product_id.name))
 
                 key = (analytic_line.product_id.id,
-                       analytic_line.product_uom_id.id,
-                       analytic_line.user_id.id,
-                       analytic_line.to_invoice.id,
-                       analytic_line.account_id,
-                       analytic_line.journal_id.type)
-                invoice_lines_grouping.setdefault(key, []).append(analytic_line)
+                    analytic_line.product_uom_id.id,
+                    analytic_line.user_id.id,
+                    analytic_line.to_invoice.id,
+                    analytic_line.account_id,
+                    analytic_line.journal_id.type)
+                invoice_lines_grouping.setdefault(key, []).append(
+                    analytic_line)
 
             # finally creates the invoice line
-            for (product_id, uom, user_id, factor_id, account, journal_type), lines_to_invoice in invoice_lines_grouping.items():
-                curr_invoice_line = self._prepare_cost_invoice_line(cr, uid, last_invoice,
-                    product_id, uom, user_id, factor_id, account, lines_to_invoice,
-                    journal_type, data, context=context)
+            for (product_id, uom, user_id, factor_id, account, journal_type
+                    ), lines_to_invoice in invoice_lines_grouping.items():
+                curr_invoice_line = self._prepare_cost_invoice_line(
+                    cr, uid, last_invoice,
+                    product_id, uom, user_id, factor_id, account, 
+                    lines_to_invoice,
+                    journal_type, data, 
+                    context=context)
 
-                invoice_line_obj.create(cr, uid, curr_invoice_line, context=context)
-            self.write(cr, uid, [l.id for l in analytic_lines], {'invoice_id': last_invoice}, context=context)
+                invoice_line_obj.create(cr, uid, curr_invoice_line, 
+                    context=context)
+            self.write(cr, uid, [l.id for l in analytic_lines], {
+                'invoice_id': last_invoice}, context=context)
             invoice_obj.button_reset_taxes(cr, uid, [last_invoice], context)
         return invoices
     
@@ -136,16 +152,24 @@ class analytic_entries_report(osv.osv):
         'name': fields.char('Description', size=64, readonly=True),
         'partner_id': fields.many2one('res.partner', 'Partner'),
         'company_id': fields.many2one('res.company', 'Company', required=True),
-        'currency_id': fields.many2one('res.currency', 'Currency', required=True),
-        'account_id': fields.many2one('account.analytic.account', 'Account', required=False),
-        'general_account_id': fields.many2one('account.account', 'General Account', required=True),
-        'journal_id': fields.many2one('account.analytic.journal', 'Journal', required=True),
-        'move_id': fields.many2one('account.move.line', 'Move', required=True),
-        'product_id': fields.many2one('product.product', 'Product', required=True),
-        'product_uom_id': fields.many2one('product.uom', 'Product Unit of Measure', required=True),
+        'currency_id': fields.many2one('res.currency', 'Currency', 
+            required=True),
+        'account_id': fields.many2one('account.analytic.account', 'Account', 
+            required=False),
+        'general_account_id': fields.many2one('account.account', 
+            'General Account', required=True),
+        'journal_id': fields.many2one('account.analytic.journal', 'Journal', 
+            required=True),
+        'move_id': fields.many2one('account.move.line', 'Move', 
+            required=True),
+        'product_id': fields.many2one('product.product', 'Product', 
+            required=True),
+        'product_uom_id': fields.many2one('product.uom', 
+            'Product Unit of Measure', required=True),
         'amount': fields.float('Amount', readonly=True),
         'unit_amount': fields.integer('Unit Amount', readonly=True),
-        'nbr': fields.integer('# Entries', readonly=True),  # TDE FIXME master: rename into nbr_entries
+        # TDE FIXME master: rename into nbr_entries
+        'nbr': fields.integer('# Entries', readonly=True),  
     }
     def init(self, cr):
         tools.drop_view_if_exists(cr, 'analytic_entries_report')
@@ -172,7 +196,8 @@ class analytic_entries_report(osv.osv):
                      account_analytic_line a, account_analytic_account analytic
                  where analytic.id = a.account_id
                  group by
-                     a.date, a.user_id,a.name,a.analytic_partner_id,a.company_id,a.currency_id,
+                     a.date, a.user_id,a.name,a.analytic_partner_id,
+                     a.company_id,a.currency_id,
                      a.account_id,a.general_account_id,a.journal_id,
                      a.move_id,a.product_id,a.product_uom_id
             )
@@ -187,8 +212,8 @@ class HrAnalyticTimesheet(orm.Model):
     # ----------
     # on change:
     # ----------
-    def onchange_partner_id(self, cr, uid, ids, analytic_partner_id, account_id, 
-            context=None):
+    def onchange_partner_id(
+            self, cr, uid, ids, analytic_partner_id, account_id, context=None):
         ''' Reset account when change partner
         '''
         res = {}

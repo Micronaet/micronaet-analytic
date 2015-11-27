@@ -47,6 +47,79 @@ class AccountAnalyticLine(orm.Model):
     # ---------------------------------------
     # Override function hr_timesheet_invoice:
     # ---------------------------------------
+    def _prepare_cost_invoice_line(self, cr, uid, invoice_id, product_id, uom, user_id,
+                factor_id, account, analytic_lines, journal_type, data, context=None):
+        product_obj = self.pool['product.product']
+
+        uom_context = dict(context or {}, uom=uom)
+
+        total_price = sum(l.amount for l in analytic_lines)
+        total_qty = sum(l.unit_amount for l in analytic_lines)
+
+        if data.get('product'):
+            # force product, use its public price
+            if isinstance(data['product'], (tuple, list)):
+                product_id = data['product'][0]
+            else:
+                product_id = data['product']
+            unit_price = self._get_invoice_price(cr, uid, account, product_id, user_id, total_qty, uom_context)
+        elif journal_type == 'general' and product_id:
+            # timesheets, use sale price
+            unit_price = self._get_invoice_price(cr, uid, account, product_id, user_id, total_qty, uom_context)
+        else:
+            # expenses, using price from amount field
+            unit_price = total_price*-1.0 / total_qty
+
+        factor = self.pool['hr_timesheet_invoice.factor'].browse(cr, uid, factor_id, context=uom_context)
+        factor_name = factor.customer_name
+        curr_invoice_line = {
+            'price_unit': unit_price,
+            'quantity': total_qty,
+            'product_id': product_id,
+            'discount': factor.factor,
+            'invoice_id': invoice_id,
+            'name': factor_name,
+            'uos_id': uom,
+            'account_analytic_id': account.id,
+        }
+
+        if product_id:
+            product = product_obj.browse(cr, uid, product_id, context=uom_context)
+            factor_name = product_obj.name_get(cr, uid, [product_id], context=uom_context)[0][1]
+            if factor.customer_name:
+                factor_name += ' - ' + factor.customer_name
+
+                general_account = product.property_account_income or product.categ_id.property_account_income_categ
+                if not general_account:
+                    raise osv.except_osv(_('Error!'), _("Configuration Error!") + '\n' + _("Please define income account for product '%s'.") % product.name)
+                taxes = product.taxes_id or general_account.tax_ids
+                tax = self.pool['account.fiscal.position'].map_tax(cr, uid, account.partner_id.property_account_position, taxes)
+                curr_invoice_line.update({
+                    'invoice_line_tax_id': [(6, 0, tax)],
+                    'name': factor_name,
+                    'invoice_line_tax_id': [(6, 0, tax)],
+                    'account_id': general_account.id,
+                })
+
+            note = []
+            for line in analytic_lines:
+                # set invoice_line_note
+                details = []
+                if data.get('date', False):
+                    details.append(line['date'])
+                if data.get('time', False):
+                    if line['product_uom_id']:
+                        details.append("%s %s" % (line.unit_amount, line.product_uom_id.name))
+                    else:
+                        details.append("%s" % (line['unit_amount'], ))
+                if data.get('name', False):
+                    details.append(line['name'])
+                if details:
+                    note.append(u' - '.join(map(lambda x: unicode(x) or '', details)))
+            if note:
+                curr_invoice_line['name'] += "\n" + ("\n".join(map(lambda x: unicode(x) or '', note)))
+        return curr_invoice_line
+    
     def _prepare_cost_invoice(self, cr, uid, partner, company_id, currency_id, analytic_lines, context=None):
         """ returns values used to create main invoice from analytic lines"""
         account_payment_term_obj = self.pool['account.payment.term']

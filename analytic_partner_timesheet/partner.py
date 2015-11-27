@@ -21,6 +21,7 @@ import os
 import sys
 import logging
 import openerp
+import time
 import openerp.netsvc as netsvc
 import openerp.addons.decimal_precision as dp
 from openerp.osv import fields, osv, expression, orm
@@ -43,9 +44,34 @@ class AccountAnalyticLine(orm.Model):
     '''
     _inherit = 'account.analytic.line'
     
-    # --------------------------------------
-    # Override function that create invoice:
-    # --------------------------------------
+    # ---------------------------------------
+    # Override function hr_timesheet_invoice:
+    # ---------------------------------------
+    def _prepare_cost_invoice(self, cr, uid, partner, company_id, currency_id, analytic_lines, context=None):
+        """ returns values used to create main invoice from analytic lines"""
+        account_payment_term_obj = self.pool['account.payment.term']
+        invoice_name = analytic_lines[0].account_id.name
+
+        date_due = False
+        if partner.property_payment_term:
+            pterm_list = account_payment_term_obj.compute(cr, uid,
+                    partner.property_payment_term.id, value=1,
+                    date_ref=time.strftime('%Y-%m-%d'))
+            if pterm_list:
+                pterm_list = [line[0] for line in pterm_list]
+                pterm_list.sort()
+                date_due = pterm_list[-1]
+        return {
+            'name': "%s - %s" % (time.strftime('%d/%m/%Y'), invoice_name),
+            'partner_id': partner.id,
+            'company_id': company_id,
+            'payment_term': partner.property_payment_term.id or False,
+            'account_id': partner.property_account_receivable.id,
+            'currency_id': currency_id,
+            'date_due': date_due,
+            'fiscal_position': partner.property_account_position.id
+        }
+
     def invoice_cost_create(self, cr, uid, ids, data=None, context=None):
         invoice_obj = self.pool.get('account.invoice')
         invoice_line_obj = self.pool.get('account.invoice.line')

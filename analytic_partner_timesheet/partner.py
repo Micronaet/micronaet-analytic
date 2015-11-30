@@ -44,6 +44,46 @@ class AccountAnalyticLine(orm.Model):
     '''
     _inherit = 'account.analytic.line'
     
+    def create(self, cr, uid, vals, context=None):
+        """ Create a new record for a model ClassName
+            @param cr: cursor to database
+            @param uid: id of current user
+            @param vals: provides a data for new record
+            @param context: context arguments, like lang, time zone
+            
+            @return: returns a id of new record
+        """
+        if 'analytic_account_id' not in vals:
+            account_pool = self.pool.get('account.analytic.account')
+            account_proxy = account_pool.browse(cr, uid, vals['account_id'], 
+                context=context)
+            vals['analytic_partner_id'] = account_proxy.partner_id.id or False
+    
+        res_id = super(AccountAnalyticLine, self).create(
+            cr, uid, vals, context=context)
+        return res_id
+
+    def write(self, cr, uid, ids, vals, context=None):
+        """ Update redord(s) comes in {ids}, with new value comes as {vals}
+            return True on success, False otherwise
+            @param cr: cursor to database
+            @param uid: id of current user
+            @param ids: list of record ids to be update
+            @param vals: dict of new values to be set
+            @param context: context arguments, like lang, time zone
+            
+            @return: True on success, False otherwise
+        """
+        if 'analytic_account_id' not in vals and 'account_id' in vals:
+            account_pool = self.pool.get('account.analytic.account')
+            account_proxy = account_pool.browse(cr, uid, vals['account_id'], 
+                context=context)
+            vals['analytic_partner_id'] = account_proxy.partner_id.id or False
+        
+        res = super(AccountAnalyticLine, self).write(
+            cr, uid, ids, vals, context=context)
+        return res
+
     # ---------------------------------------
     # Override function hr_timesheet_invoice:
     # ---------------------------------------
@@ -319,6 +359,53 @@ class analytic_entries_report(osv.osv):
         """
         )
 
+class ProjectTaskWork(orm.Model):
+    ''' Add onchange event
+    '''
+    _inherit = 'project.task.work'
+
+    '''def create(self, cr, uid, vals, context=None):
+        """ Create a new record for a model ClassName
+            @param cr: cursor to database
+            @param uid: id of current user
+            @param vals: provides a data for new record
+            @param context: context arguments, like lang, time zone
+            
+            @return: returns a id of new record
+        """
+        import pdb; pdb.set_trace()
+        task_pool = self.pool.get('project.task')
+        task_proxy = task_pool.browse(cr, uid, vals['task_id'], 
+            context=context)
+        vals['analytic_partner_id'] = task_proxy.partner_id.id
+    
+        res_id = super(ProjectTaskWork, self).create(
+            cr, uid, vals, context=context)
+        return res_id
+
+    def write(self, cr, uid, ids, vals, context=None):
+        """ Update redord(s) comes in {ids}, with new value comes as {vals}
+            return True on success, False otherwise
+            @param cr: cursor to database
+            @param uid: id of current user
+            @param ids: list of record ids to be update
+            @param vals: dict of new values to be set
+            @param context: context arguments, like lang, time zone
+            
+            @return: True on success, False otherwise
+        """
+        # TODO change place for setup "Yes 100%"
+        import pdb; pdb.set_trace()
+        if 'task_id' in vals:
+            task_pool = self.pool.get('project.task')
+            task_proxy = task_pool.browse(cr, uid, vals['task_id'], 
+                context=context)
+            vals['analytic_partner_id'] = task_proxy.partner_id.id
+        
+        res = super(ProjectTaskWork, self).write(
+            cr, uid, ids, vals, context=context)
+        return res'''
+    
 class HrAnalyticTimesheet(orm.Model):
     ''' Add onchange event
     '''

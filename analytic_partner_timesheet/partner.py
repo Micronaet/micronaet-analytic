@@ -324,6 +324,54 @@ class HrAnalyticTimesheet(orm.Model):
     '''
     _inherit = 'hr.analytic.timesheet'
 
+    def _get_yes_100(self, cr, uid, context=None):
+        ''' Find invoice all
+        '''
+        factor_pool = self.pool.get('hr_timesheet_invoice.factor')
+        factor_ids = factor_pool.search(cr, uid, [('name', '=', 'Yes (100%)')], 
+            context=context)
+        if factor_ids:
+            return factor_ids[0]    
+        else:
+            return 1    
+        #return self.pool.get(
+        #    'ir.model.data').get_object_reference(
+        #        cr, uid, 'hr_timesheet_invoice.factor', 
+        #        'timesheet_invoice_factor1') or False
+                
+    def create(self, cr, uid, vals, context=None):
+        """ Create a new record for a model ClassName
+            @param cr: cursor to database
+            @param uid: id of current user
+            @param vals: provides a data for new record
+            @param context: context arguments, like lang, time zone
+            
+            @return: returns a id of new record
+        """
+        vals['to_invoice'] = self._get_yes_100(cr, uid, context=context)
+    
+        res_id = super(HrAnalyticTimesheet, self).create(
+            cr, uid, vals, context=context)
+        return res_id
+    
+    def write(self, cr, uid, ids, vals, context=None):
+        """ Update redord(s) comes in {ids}, with new value comes as {vals}
+            return True on success, False otherwise
+            @param cr: cursor to database
+            @param uid: id of current user
+            @param ids: list of record ids to be update
+            @param vals: dict of new values to be set
+            @param context: context arguments, like lang, time zone
+            
+            @return: True on success, False otherwise
+        """
+        # TODO change place for setup "Yes 100%"
+        vals['to_invoice'] = self._get_yes_100(cr, uid, context=context)
+        
+        res = super(HrAnalyticTimesheet, self).write(
+            cr, uid, ids, vals, context=context)
+        return res
+    
     # ----------
     # on change:
     # ----------
@@ -344,7 +392,7 @@ class HrAnalyticTimesheet(orm.Model):
         
         # Partner different:    
         res['value'] = {}
-        res['value']['account_id'] = False # Reset account        
+        res['value']['account_id'] = False # Reset account 
         return res
-           
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

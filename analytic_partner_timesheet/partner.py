@@ -53,6 +53,7 @@ class AccountAnalyticLine(orm.Model):
             
             @return: returns a id of new record
         """
+        import pdb; pdb.set_trace()
         if 'analytic_account_id' not in vals:
             account_pool = self.pool.get('account.analytic.account')
             account_proxy = account_pool.browse(cr, uid, vals['account_id'], 
@@ -74,6 +75,7 @@ class AccountAnalyticLine(orm.Model):
             
             @return: True on success, False otherwise
         """
+        import pdb; pdb.set_trace()
         if 'analytic_account_id' not in vals and 'account_id' in vals:
             account_pool = self.pool.get('account.analytic.account')
             account_proxy = account_pool.browse(cr, uid, vals['account_id'], 
@@ -373,11 +375,12 @@ class ProjectTaskWork(orm.Model):
             
             @return: returns a id of new record
         """
-        import pdb; pdb.set_trace()
+        context = context or {}
         task_pool = self.pool.get('project.task')
         task_proxy = task_pool.browse(cr, uid, vals['task_id'], 
             context=context)
-        vals['analytic_partner_id'] = task_proxy.partner_id.id
+        context['analytic_partner_id'] = (task_proxy.partner_id.id or 
+            task_proxy.project_id.partner_id.id or False) 
     
         res_id = super(ProjectTaskWork, self).create(
             cr, uid, vals, context=context)
@@ -395,12 +398,15 @@ class ProjectTaskWork(orm.Model):
             @return: True on success, False otherwise
         """
         # TODO change place for setup "Yes 100%"
-        import pdb; pdb.set_trace()
-        if 'task_id' in vals:
+        context = context or {}        
+        try:
             task_pool = self.pool.get('project.task')
             task_proxy = task_pool.browse(cr, uid, vals['task_id'], 
                 context=context)
-            vals['analytic_partner_id'] = task_proxy.partner_id.id
+            context['analytic_partner_id'] = (task_proxy.partner_id.id or 
+                task_proxy.project_id.partner_id.id or False) 
+        except:
+            pass        
         
         res = super(ProjectTaskWork, self).write(
             cr, uid, ids, vals, context=context)

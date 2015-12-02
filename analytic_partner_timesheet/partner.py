@@ -53,13 +53,13 @@ class AccountAnalyticLine(orm.Model):
             
             @return: returns a id of new record
         """
-        import pdb; pdb.set_trace()
+        # Find partner for save in mirror partner
         if 'analytic_account_id' not in vals:
             account_pool = self.pool.get('account.analytic.account')
             account_proxy = account_pool.browse(cr, uid, vals['account_id'], 
                 context=context)
             vals['analytic_partner_id'] = account_proxy.partner_id.id or False
-    
+
         res_id = super(AccountAnalyticLine, self).create(
             cr, uid, vals, context=context)
         return res_id
@@ -75,7 +75,7 @@ class AccountAnalyticLine(orm.Model):
             
             @return: True on success, False otherwise
         """
-        import pdb; pdb.set_trace()
+        # Find partner for save in mirror partner
         if 'analytic_account_id' not in vals and 'account_id' in vals:
             account_pool = self.pool.get('account.analytic.account')
             account_proxy = account_pool.browse(cr, uid, vals['account_id'], 
@@ -110,7 +110,7 @@ class AccountAnalyticLine(orm.Model):
             unit_price = self._get_invoice_price(cr, uid, account, product_id, user_id, total_qty, uom_context)
         else:
             # expenses, using price from amount field
-            unit_price = total_price*-1.0 / total_qty
+            unit_price = total_price * -1.0 / total_qty
 
         factor = self.pool['hr_timesheet_invoice.factor'].browse(cr, uid, factor_id, context=uom_context)
         factor_name = factor.customer_name
@@ -361,57 +361,6 @@ class analytic_entries_report(osv.osv):
         """
         )
 
-class ProjectTaskWork(orm.Model):
-    ''' Add onchange event
-    '''
-    _inherit = 'project.task.work'
-
-    '''def create(self, cr, uid, vals, context=None):
-        """ Create a new record for a model ClassName
-            @param cr: cursor to database
-            @param uid: id of current user
-            @param vals: provides a data for new record
-            @param context: context arguments, like lang, time zone
-            
-            @return: returns a id of new record
-        """
-        context = context or {}
-        task_pool = self.pool.get('project.task')
-        task_proxy = task_pool.browse(cr, uid, vals['task_id'], 
-            context=context)
-        context['analytic_partner_id'] = (task_proxy.partner_id.id or 
-            task_proxy.project_id.partner_id.id or False) 
-    
-        res_id = super(ProjectTaskWork, self).create(
-            cr, uid, vals, context=context)
-        return res_id
-
-    def write(self, cr, uid, ids, vals, context=None):
-        """ Update redord(s) comes in {ids}, with new value comes as {vals}
-            return True on success, False otherwise
-            @param cr: cursor to database
-            @param uid: id of current user
-            @param ids: list of record ids to be update
-            @param vals: dict of new values to be set
-            @param context: context arguments, like lang, time zone
-            
-            @return: True on success, False otherwise
-        """
-        # TODO change place for setup "Yes 100%"
-        context = context or {}        
-        try:
-            task_pool = self.pool.get('project.task')
-            task_proxy = task_pool.browse(cr, uid, vals['task_id'], 
-                context=context)
-            context['analytic_partner_id'] = (task_proxy.partner_id.id or 
-                task_proxy.project_id.partner_id.id or False) 
-        except:
-            pass        
-        
-        res = super(ProjectTaskWork, self).write(
-            cr, uid, ids, vals, context=context)
-        return res'''
-    
 class HrAnalyticTimesheet(orm.Model):
     ''' Add onchange event
     '''

@@ -58,13 +58,12 @@ class Parser(report_sxw.rml_parse):
         
         # get list from wizard elements
         domain = []
-        from_date = "%s-%s-01" % (
-            data['year'], 
-            data['month'])
-        to_date = "%s-%s-01" % (
-            data['year'], 
-            '%02d' % (
-                int(data['month']) + 1) if data['month'] != '12' else '01',
+        year = int(data['year'])
+        month = int(data['month'])
+        from_date = '%s-%s-01' % (year, month)
+        to_date = '%s-%s-01' % (
+            year if month != 12 else year + 1, 
+            '%02d' % (1 if month == 12 else month + 1),
             )
         
         domain.extend([

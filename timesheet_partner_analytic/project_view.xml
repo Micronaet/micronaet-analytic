@@ -9,12 +9,42 @@
                 <field name="planned_hours" position="before">
                     <field name="planned_manual" widget="float_time"/>
                     <field name="planned_total" />
-                    <!--
-                    <field name="all_progress_rate" />
-                    <field name="all_planned_hours" />
-                    <field name="all_effective_hours" />
-                    -->
+                    
+                    <separator string="Statistic" colspan="4"/>
+	                <field name="all_planned_hours" widget="float_time" />
+	                <field name="all_effective_hours" widget="float_time" />
+	                <field name="all_progress_rate" widget="progressbar" />
                 </field>
+                <field name="planned_hours" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+                <field name="effective_hours" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+                <field name="resource_calendar_id" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_project_new_status_tree">
+            <field name="name">project.project.tree</field>
+            <field name="model">project.project</field>
+            <field name="priority" eval="1" />
+            <field name="arch" type="xml">
+                <tree colors="red:date and (date&lt;current_date) and (state == 'open');blue:state in ('draft','pending');grey: state in ('close','cancelled')" string="Projects">
+	                <field name="sequence" widget="handle" />
+	                <field name="date" invisible="1" />
+	                <field name="name" string="Project name" />
+	                <field name="user_id" string="Project Manager" />
+	                <field name="partner_id" string="Contact" />
+	                <field name="parent_id" string="Genitore" invisible="1" />
+	                <field name="planned_manual" widget="float_time" string="Manual total"/>
+	                <field name="all_planned_hours" widget="float_time" />
+	                <field name="all_effective_hours" widget="float_time" />
+	                <field name="all_progress_rate" widget="progressbar" />
+	                <field name="planned_total" />
+	                <field name="state" />
+                </tree>
             </field>
         </record>
 

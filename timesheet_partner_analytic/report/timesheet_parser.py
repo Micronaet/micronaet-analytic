@@ -49,7 +49,7 @@ class Parser(report_sxw.rml_parse):
                 ('date', '>=', '%s 00:00:00' % data['from_date']))
         if data['to_date']:
             domain.append(
-                ('date', '<=', '%s 00:00:00' % data['to_date']))
+                ('date', '<=', '%s 23:59:59' % data['to_date']))
                 
         if data.get('account_id', False):
             domain.append(

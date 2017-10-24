@@ -38,6 +38,18 @@ from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
 
 _logger = logging.getLogger(__name__)
 
+class AccountAnalyticAccount(orm.Model):
+    """ Model name: AccountAnalyticAccount
+    """
+    
+    _inherit = 'account.analytic.account'
+
+    _columns = {
+        'ts_ids': fields.one2many(
+            'hr.analytic.timesheet', 'account_id', 
+            'Timesheet'),
+        }
+
 class HrAnalyticTimesheet(orm.Model):
     """ Model name: HrAnalyticTimesheet
     """
@@ -87,12 +99,27 @@ class ProjectProject(orm.Model):
         res = {}
         for item in self.browse(cr, uid, ids, context=context):
             res[item.id] = {}
-            res[item.id]['all_progress_rate'] = 0.0
-            res[item.id]['all_planned_hours'] = 0.0
-            res[item.id]['all_effective_hours'] = 0.0
             
-            task = self._progress_rate(cr, uid, ids, False, False, 
-                context=context)                
+            # Total manual or total by task:
+            if item.planned_manual:
+                res[item.id]['all_planned_hours'] = item.planned_manual 
+            else:
+                res[item.id]['all_planned_hours'] = 0.0
+                for task in item.linked_task_ids:
+                    res[item.id]['all_planned_hours'] += task.planned_hours
+            
+            # Total intervent per project:
+            res[item.id]['all_effective_hours'] = 0.0 
+            for ts in item.ts_ids:
+                res[item.id]['all_effective_hours'] += ts.unit_amount
+
+            # Calculate progression:
+            if res[item.id]['all_planned_hours']:
+                res[item.id]['all_progress_rate'] = 100.0 * \
+                    res[item.id]['all_effective_hours'] / \
+                        res[item.id]['all_planned_hours']
+            else:
+                res[item.id]['all_progress_rate'] = 0.0                   
         return res
 
     _columns = {
@@ -103,20 +130,24 @@ class ProjectProject(orm.Model):
         # Total at the date when closed:    
         'planned_total': fields.float(
             'Planned total', digits=(16, 2)),
-        
+
+        # Task:
+        'linked_task_ids': fields.one2many(
+            'project.task', 'project_id', 
+            'Tasks',),
+                
         'all_progress_rate': fields.function(
             _progress_rate_total, method=True, 
-            type='float', string='Progress rate total', store=False,
+            type='float', string='Progress rate', store=False,
             multi=True), 
         'all_planned_hours': fields.function(
             _progress_rate_total, method=True, 
-            type='float', string='Progress rate total', store=False,
+            type='float', string='Planned total', store=False,
             multi=True), 
         'all_effective_hours': fields.function(
             _progress_rate_total, method=True, 
-            type='float', string='Progress rate total', store=False,
-            multi=True), 
-         
+            type='float', string='Effective total', store=False,
+            multi=True),         
         }
     
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

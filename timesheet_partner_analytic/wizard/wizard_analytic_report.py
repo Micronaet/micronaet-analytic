@@ -66,6 +66,7 @@ class mrp_production_status_wizard(osv.osv_memory):
         datas['account_id'] = wiz_proxy.account_id.id or False
         datas['year'] = wiz_proxy.year or False
         datas['month'] = wiz_proxy.month or False
+        datas['with_task'] = wiz_proxy.with_task
         #datas['partner_id'] = wiz_proxy.partner_id.id or False
 
         return {
@@ -82,8 +83,8 @@ class mrp_production_status_wizard(osv.osv_memory):
         'account_id': fields.many2one('account.analytic.account', 'Account'),
         'partner_id': fields.many2one('res.partner', 'Partner'),
         
-        'from_date': fields.date('From', help='Date >='),
-        'to_date': fields.date('To', help='Date <'),
+        'from_date': fields.date('From >=', help='Date >='),
+        'to_date': fields.date('To <', help='Date <'),
         
         'month': fields.selection([
             ('01', 'January'),
@@ -100,6 +101,7 @@ class mrp_production_status_wizard(osv.osv_memory):
             ('12', 'December'),
             ], 'Month'),
         'year': fields.integer('Year'),        
+        'with_task': fields.boolean('With task'),
         }
         
     _defaults = {

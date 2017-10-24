@@ -32,6 +32,8 @@
         'hr',
         'analytic',
         'hr_timesheet',
+        'hr_timesheet_sheet',
+        'project',
         'hr_timesheet_invoice',
         'hr_attendance',
         'report',
@@ -39,7 +41,10 @@
         ],
     'init_xml': [],
     'data': [
+        'security/project_group.xml',
+    
         'partner_view.xml',
+        'project_view.xml',
         'report/timesheet_report.xml',
         'report/hours_report.xml',
         'wizard/wizard_analytic_report.view.xml',

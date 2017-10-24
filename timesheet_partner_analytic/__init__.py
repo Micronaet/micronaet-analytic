@@ -26,6 +26,7 @@
 ##############################################################################
 
 from . import partner
+from . import project
 import report
 import wizard
 

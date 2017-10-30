@@ -84,7 +84,7 @@ class mrp_production_status_wizard(osv.osv_memory):
         'partner_id': fields.many2one('res.partner', 'Partner'),
         
         'from_date': fields.date('From >=', help='Date >='),
-        'to_date': fields.date('To <', help='Date <'),
+        'to_date': fields.date('To <=', help='Date <='),
         
         'month': fields.selection([
             ('01', 'January'),

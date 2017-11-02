@@ -50,9 +50,24 @@
 
             <menuitem 
                 parent="menu_timesheet_dashboard" 
+                id="menu_timesheet_dashboard_project" 
+                name="Pratiche"
+                sequence="90"
+                />
+                <menuitem 
+                    parent="menu_timesheet_dashboard_project" 
+                    id="menu_timesheet_dashboard_project_project" 
+                    action="project.open_view_project_all"
+                    sequence="10"
+                    name="Elenco pratiche"
+                    />
+
+
+            <menuitem 
+                parent="menu_timesheet_dashboard" 
                 id="menu_timesheet_dashboard_configuration" 
                 name="Configurazione"
-                sequence="90"
+                sequence="99"
                 />
                 <!--<menuitem 
                     parent="menu_timesheet_dashboard_configuration" 

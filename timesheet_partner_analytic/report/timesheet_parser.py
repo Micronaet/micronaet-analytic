@@ -171,7 +171,7 @@ class Parser(report_sxw.rml_parse):
         current_partner_ids = []
         for ts in timesheet_pool.browse(
                 cr, uid, timesheet_ids, context=context):                
-            account = ts.account_id
+            account = ts.account_id # Timesheet element
             if not with_task and account in projects:
                 continue # jump task element
             partner = account.partner_id # readability
@@ -191,16 +191,13 @@ class Parser(report_sxw.rml_parse):
         for partner_id, projects in self.project_closed.iteritems():
             if partner_id not in current_partner_ids:                
                 # Create empty record for generate a partner in list
-                accounts[projects[0].analytic_account_id.id] = []
-                totals[account] = 0
+                accounts[projects[0].analytic_account_id] = []
+                #totals[account] = 0
         
-        res = []    
-        
+        res = []
         previous = 'CHANGE ME'
         for account, ts in sorted(accounts.iteritems(), key=lambda x: (
-                x[0].partner_id.name,
-                x[0].name,
-                )):
+                x[0].partner_id.name, x[0].name)):
             partner = account.partner_id
             if previous == partner.name:
                 first = False
@@ -217,7 +214,7 @@ class Parser(report_sxw.rml_parse):
                 partner, # partner
                 account.name, # account name
                 ts, # intervent
-                totals[account], # total hours
+                totals.get(account, 0),# total hours TODO check when no partner
                 ))
         return res
 

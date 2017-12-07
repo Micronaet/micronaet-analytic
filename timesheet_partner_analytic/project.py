@@ -147,7 +147,7 @@ class ProjectProject(orm.Model):
         'all_effective_hours': fields.function(
             _progress_rate_total, method=True, 
             type='float', string='Effective total', store=False,
-            multi=True),         
+            multi=True),
         }
     
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

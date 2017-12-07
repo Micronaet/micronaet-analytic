@@ -59,6 +59,21 @@
                 </field>
             </field>
         </record>
+                
+        <record model="ir.actions.act_window" id="action_project_project_warning_task_90">
+            <field name="name">Pratiche a termine</field>
+            <field name="res_model">project.project</field>
+            <field name="view_mode">tree,form,kanban</field>
+            <field name="view_id" ref="view_project_new_status_tree"/>
+            <field name="context">{}</field>
+            <field name="domain">[("all_progress_rate", "&gt;", "90")]</field>
+        </record>
+        <menuitem 
+            parent="project.menu_action_view_task" 
+            id="menu_project_project_warning_task_90" 
+            action="action_project_project_warning_task_90"
+            />
+        
     </data>
 </openerp>
 

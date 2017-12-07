@@ -35,11 +35,17 @@ class Parser(report_sxw.rml_parse):
             'get_objects': self.get_objects,
             'get_contract_closed': self.get_contract_closed,
             'get_hour_format': self.get_hour_format,
+            'get_list_partner_task_closed': self.get_list_partner_task_closed,
             
             # Timesheet report:
             'get_hours': self.get_hours,            
         })
 
+    def get_list_partner_task_closed(self, partner_id):
+        ''' get partner project list for partner passed
+        '''
+        return self.project_closed.get(partner_id, [])
+        
     def get_domain(self, data):
         ''' Domain composition
         '''
@@ -117,12 +123,10 @@ class Parser(report_sxw.rml_parse):
         project_ids = project_pool.search(cr, uid, domain, context=context)
         for project in project_pool.browse(cr, uid, project_ids, 
                 context=context):
-             if project.partner_id not in res:
-                 res[project.partner_id] = []                     
-             res[project.partner_id].append(project)
-        #return sorted(
-        #    res.iteritems(), key=lambda x: (x[0].name))
-        return res.iteritems()    
+             if project.partner_id.id not in res:
+                 res[project.partner_id.id] = []                     
+             res[project.partner_id.id].append(project)
+        return res
         
     def get_objects(self, objects, data):
         ''' Get master objects
@@ -130,6 +134,11 @@ class Parser(report_sxw.rml_parse):
         cr = self.cr
         uid = self.uid
         context = {}
+        
+        # ---------------------------------------------------------------------
+        # Get list of current project closed by partner:
+        # ---------------------------------------------------------------------
+        self.project_closed = self.get_contract_closed(data)
         
         if data is None:
             data = {}
@@ -154,19 +163,36 @@ class Parser(report_sxw.rml_parse):
             # get list of selected items
             timesheet_ids = [obj.id for obj in objects]
         with_task = data.get('with_task', False)
-        
+
+        # ---------------------------------------------------------------------        
+        # Create accounts database (list of timesheet)
+        # ---------------------------------------------------------------------        
         totals = {}
+        current_partner_ids = []
         for ts in timesheet_pool.browse(
                 cr, uid, timesheet_ids, context=context):                
             account = ts.account_id
             if not with_task and account in projects:
                 continue # jump task element
+            partner = account.partner_id # readability
+            if partner.id not in current_partner_ids:
+                current_partner_ids.append(partner.id)
+
             if account not in accounts:
                 accounts[account] = []
                 totals[account] = 0
                 
             accounts[account].append(ts)
             totals[account] += ts.unit_amount
+
+        # ---------------------------------------------------------------------        
+        # Partner task completed test:
+        # ---------------------------------------------------------------------        
+        for partner_id, projects in self.project_closed.iteritems():
+            if partner_id not in current_partner_ids:                
+                # Create empty record for generate a partner in list
+                accounts[projects[0].analytic_account_id.id] = []
+                totals[account] = 0
         
         res = []    
         
@@ -188,7 +214,7 @@ class Parser(report_sxw.rml_parse):
             res.append((
                 first, # change partner name
                 project, # if project browse obj
-                partner.name, # partner name
+                partner, # partner
                 account.name, # account name
                 ts, # intervent
                 totals[account], # total hours

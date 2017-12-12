@@ -60,6 +60,8 @@
             <field name="arch" type="xml">
                 <tree string="Apartment">
                     <field name="name" />
+                    <field name="street" />
+                    <field name="city" />
                 </tree>
             </field>
         </record>
@@ -73,10 +75,13 @@
                         <group col="4" colspan="4">
                             <field name="name" colspan="2" string="Sigla appartamento"/>
                             <field name="apartment_id" />
-                            <field name="is_apartment" invisible="1"/>
+                            <!--TODO remove
+                            <field name="use_timesheets" />
+                            <field name="type" />-->
                             <separator string="Detail:" colspan="4"/>
                             <field name="street" />
                             <field name="city" />
+                            <field name="is_apartment" invisible="1"/>
                         </group>
                     </sheet>        
                 </form>
@@ -88,7 +93,7 @@
             <field name="res_model">account.analytic.account</field>
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="view_apartment_tree"/>
-            <field name="context">{'form_view_ref': 'refugees_management.view_apartment_form','default_is_apartment':True}</field>
+            <field name="context">{'form_view_ref': 'refugees_management.view_apartment_form','default_is_apartment':True,'default_use_timesheets':True,'default_type':'normal'}</field>
             <field name="domain">[('is_apartment', '=', True)]</field>
         </record>
 
@@ -147,9 +152,9 @@
         <record model="ir.ui.view" id="view_work_apartment_tree">
             <field name="name">work.apartment.tree</field>
             <field name="model">hr.analytic.timesheet</field>
+            <field name="priority" eval="40" />
             <field name="arch" type="xml">
                 <tree string="Work" editable="bottom">
-                    <field name="name" />
                     <field name="date" on_change="on_change_date(date)" required="1"/>
                     <field name="user_id" on_change="on_change_user_id(user_id)" required="1" context="{'default_groups_ref': ['base.group_user']}" options="{'no_open': True, 'no_create': True}" />
                     <field name="name" required="1" />
@@ -162,6 +167,22 @@
                     <field name="product_id" on_change="on_change_unit_amount(product_id, unit_amount, False, product_uom_id,journal_id)" domain="[('type','=','service')]" invisible="1" required="1" />
                 </tree>
             </field>
+        </record>
+        <record model="ir.actions.act_window" id="action_work_apartment_all">
+            <field name="name">Work on Apartment</field>
+            <field name="res_model">hr.analytic.timesheet</field>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_work_apartment_tree"/>
+            <field name="context">{}</field>
+            <field name="domain">[]</field>
+        </record>
+        <record model="ir.actions.act_window" id="action_work_apartment">
+            <field name="name">My activity</field>
+            <field name="res_model">hr.analytic.timesheet</field>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_work_apartment_tree"/>
+            <field name="context">{}</field>
+            <field name="domain">[('user_id', '=', uid)]</field>
         </record>
         
         <!-- hr.analytic.timesheet > Lesson on course-->
@@ -396,6 +417,35 @@
             <field name="domain">[]</field>
         </record>
         
+        <!--account.analytic.line-->
+        <record model="ir.actions.act_window" id="action_account_analitic_line_refugee">
+            <field name="name">Account analitic line</field>
+            <field name="res_model">account.analytic.line</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="account.view_account_analytic_line_tree"/>
+            <field name="context">{}</field>
+            <field name="domain">[]</field>
+        </record>
+        <record model="ir.actions.act_window" id="action_account_analitic_line_refugee_course">
+            <field name="name">Course</field>
+            <field name="res_model">account.analytic.line</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="account.view_account_analytic_line_tree"/>
+            <field name="context">{}</field>
+            <field name="domain">[('account_id.is_course', '=', True)]</field>
+        </record>
+        <record model="ir.actions.act_window" id="action_account_analitic_line_refugee_apartment">
+            <field name="name">Apartment</field>
+            <field name="res_model">account.analytic.line</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="account.view_account_analytic_line_tree"/>
+            <field name="context">{}</field>
+            <field name="domain">[('account_id.is_apartment', '=', True)]</field>
+        </record>
+        
         <menuitem 
             id="menu_refugees_root" 
             name="Refugees management"
@@ -425,6 +475,25 @@
                     action="action_apartment_presence"
                     sequence="30"
                     />
+                <menuitem 
+                    parent="menu_refugees_apartment" 
+                    id="menu_work_apartment" 
+                    action="action_work_apartment"
+                    sequence="40"
+                    />
+                <menuitem 
+                    parent="menu_refugees_apartment" 
+                    id="menu_refugees_apartment_apartment_admin" 
+                    name="Configuration"
+                    sequence="90"
+                    />
+                    <menuitem 
+                        parent="menu_refugees_apartment_apartment_admin" 
+                        id="menu_work_apartment_all" 
+                        action="action_work_apartment_all"
+                        sequence="10"
+                        />
+                    
 
             <menuitem 
                 parent="menu_refugees_root" 
@@ -477,6 +546,30 @@
                     action="action_teacher"
                     sequence="20"
                     />
+                    
+            <menuitem 
+                parent="menu_refugees_root" 
+                id="menu_refugees_analitic_analysis" 
+                name="Analytic"
+                sequence="30"
+                />
+                <menuitem 
+                    parent="menu_refugees_analitic_analysis" 
+                    id="menu_refugees_analitic_analysis_line" 
+                    action="action_account_analitic_line_refugee"
+                    sequence="10"/>
+                    <menuitem 
+                        parent="menu_refugees_analitic_analysis_line" 
+                        id="menu_refugees_analitic_analysis_line_course" 
+                        action="action_account_analitic_line_refugee_course"
+                        sequence="10"/>
+                    <menuitem 
+                        parent="menu_refugees_analitic_analysis_line" 
+                        id="menu_refugees_analitic_analysis_line_apartment" 
+                        action="action_account_analitic_line_refugee_apartment"
+                        sequence="10"/>
+                
+                    
 </data>
 </openerp>
 

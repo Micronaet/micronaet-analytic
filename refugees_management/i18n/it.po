@@ -1,0 +1,306 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* refugees_management
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-12-12 11:16+0000\n"
+"PO-Revision-Date: 2017-12-12 12:16+0100\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"Language: it\n"
+"X-Generator: Poedit 1.6.10\n"
+
+#. module: refugees_management
+#: model:ir.actions.act_window,name:refugees_management.action_account_analitic_line_refugee
+#: model:ir.ui.menu,name:refugees_management.menu_refugees_analitic_analysis_line
+msgid "Account analitic line"
+msgstr "Righe analitiche"
+
+#. module: refugees_management
+#: model:ir.ui.menu,name:refugees_management.menu_refugees_analitic_analysis
+msgid "Analytic"
+msgstr "Analitico"
+
+#. module: refugees_management
+#: model:ir.model,name:refugees_management.model_account_analytic_account
+msgid "Analytic Account"
+msgstr "Conto Analitico"
+
+#. module: refugees_management
+#: view:account.analytic.account:refugees_management.view_apartment_form
+#: view:account.analytic.account:refugees_management.view_apartment_tree
+#: field:account.analytic.account,apartment_id:0
+#: field:account.analytic.account,is_apartment:0
+#: view:hr.analytic.timesheet:refugees_management.view_refugee_lesson_apartment_calendar
+#: field:hr.analytic.timesheet,course_apartment_id:0
+#: model:ir.actions.act_window,name:refugees_management.action_account_analitic_line_refugee_apartment
+#: model:ir.actions.act_window,name:refugees_management.action_apartment
+#: model:ir.ui.menu,name:refugees_management.menu_refugees_analitic_analysis_line_apartment
+#: model:ir.ui.menu,name:refugees_management.menu_refugees_apartment
+#: model:ir.ui.menu,name:refugees_management.menu_refugees_apartment_apartment
+#: field:refugee.apartment.presence,apartment_id:0
+#: field:res.partner,is_apartment:0
+msgid "Apartment"
+msgstr "Appartamento"
+
+#. module: refugees_management
+#: model:ir.model,name:refugees_management.model_refugee_apartment_presence
+#: model:ir.model,name:refugees_management.model_refugee_id
+msgid "Apertment presence"
+msgstr "Apertment presence"
+
+#. module: refugees_management
+#: view:hr.analytic.timesheet:refugees_management.view_refugee_lesson_form
+#: field:hr.analytic.timesheet,attendant_ids:0
+#: model:ir.actions.act_window,name:refugees_management.action_refugee_attendant_lesson
+#: model:ir.ui.menu,name:refugees_management.menu_refugees_course_course_lesson_attendant
+#: view:refugee.lesson.attendant:refugees_management.view_refugee_lesson_attendant_form
+#: view:refugee.lesson.attendant:refugees_management.view_refugee_lesson_attendant_tree
+msgid "Attendant"
+msgstr "Attendant"
+
+#. module: refugees_management
+#: field:account.analytic.account,city:0
+msgid "City"
+msgstr "City"
+
+#. module: refugees_management
+#: model:ir.ui.menu,name:refugees_management.menu_refugees_apartment_apartment_admin
+msgid "Configuration"
+msgstr "Configurazione"
+
+#. module: refugees_management
+#: view:hr.analytic.timesheet:refugees_management.view_refugee_lesson_form
+#: view:hr.analytic.timesheet:refugees_management.view_refugee_lesson_tree
+#: view:hr.analytic.timesheet:refugees_management.view_work_apartment_tree
+msgid "Costo Totale"
+msgstr "Costo Totale"
+
+#. module: refugees_management
+#: view:account.analytic.account:refugees_management.view_course_form
+#: view:account.analytic.account:refugees_management.view_course_tree
+#: field:account.analytic.account,is_course:0
+#: view:hr.analytic.timesheet:refugees_management.view_refugee_lesson_calendar
+#: model:ir.actions.act_window,name:refugees_management.action_account_analitic_line_refugee_course
+#: model:ir.actions.act_window,name:refugees_management.action_course
+#: model:ir.ui.menu,name:refugees_management.menu_refugees_analitic_analysis_line_course
+#: model:ir.ui.menu,name:refugees_management.menu_refugees_course
+#: model:ir.ui.menu,name:refugees_management.menu_refugees_course_course
+#: field:refugee.lesson.attendant,course_id:0
+msgid "Course"
+msgstr "Course"
+
+#. module: refugees_management
+#: field:refugee.apartment.presence,create_uid:0
+#: field:refugee.lesson.attendant,create_uid:0
+msgid "Created by"
+msgstr "Created by"
+
+#. module: refugees_management
+#: field:refugee.apartment.presence,create_date:0
+#: field:refugee.lesson.attendant,create_date:0
+msgid "Created on"
+msgstr "Created on"
+
+#. module: refugees_management
+#: field:refugee.lesson.attendant,date:0
+msgid "Date"
+msgstr "Date"
+
+#. module: refugees_management
+#: field:account.analytic.account,course_apartment_id:0
+msgid "Default Apartment"
+msgstr "Default Apartment"
+
+#. module: refugees_management
+#: field:account.analytic.account,teacher_id:0
+msgid "Default Teacher"
+msgstr "Default Teacher"
+
+#. module: refugees_management
+#: view:account.analytic.account:refugees_management.view_apartment_form
+msgid "Detail:"
+msgstr "Detail:"
+
+#. module: refugees_management
+#: view:hr.analytic.timesheet:refugees_management.view_refugee_lesson_form
+#: view:hr.analytic.timesheet:refugees_management.view_refugee_lesson_tree
+#: view:hr.analytic.timesheet:refugees_management.view_work_apartment_tree
+msgid "Durata"
+msgstr "Durata"
+
+#. module: refugees_management
+#: field:account.analytic.account,from_date:0
+#: field:refugee.apartment.presence,from_date:0
+msgid "From date"
+msgstr "From date"
+
+#. module: refugees_management
+#: field:refugee.apartment.presence,id:0 field:refugee.lesson.attendant,id:0
+msgid "ID"
+msgstr "ID"
+
+#. module: refugees_management
+#: field:res.users,is_teacher:0
+msgid "Is teacher"
+msgstr "Is teacher"
+
+#. module: refugees_management
+#: field:refugee.apartment.presence,write_uid:0
+#: field:refugee.lesson.attendant,write_uid:0
+msgid "Last Updated by"
+msgstr "Last Updated by"
+
+#. module: refugees_management
+#: field:refugee.apartment.presence,write_date:0
+#: field:refugee.lesson.attendant,write_date:0
+msgid "Last Updated on"
+msgstr "Last Updated on"
+
+#. module: refugees_management
+#: view:account.analytic.account:refugees_management.view_course_form
+#: field:account.analytic.account,lesson_ids:0
+#: view:hr.analytic.timesheet:refugees_management.view_refugee_lesson_form
+#: view:hr.analytic.timesheet:refugees_management.view_refugee_lesson_tree
+#: model:ir.actions.act_window,name:refugees_management.action_refugee_lesson
+#: model:ir.actions.act_window,name:refugees_management.action_refugee_lesson_course
+#: model:ir.model,name:refugees_management.model_date
+#: model:ir.model,name:refugees_management.model_refugee_lesson
+#: model:ir.ui.menu,name:refugees_management.menu_refugees_course_course_lesson
+#: field:refugee.lesson.attendant,lesson_id:0
+msgid "Lesson"
+msgstr "Lesson"
+
+#. module: refugees_management
+#: model:ir.actions.act_window,name:refugees_management.action_refugee_lesson_apartment
+#: model:ir.ui.menu,name:refugees_management.menu_refugees_course_course_lesson_apartment
+msgid "Lesson apartment"
+msgstr "Lesson apartment"
+
+#. module: refugees_management
+#: model:ir.model,name:refugees_management.model_refugee_lesson_attendant
+msgid "Lesson attendant"
+msgstr "Lesson attendant"
+
+#. module: refugees_management
+#: model:ir.ui.menu,name:refugees_management.menu_refugees_course_course_lesson_course
+msgid "Lesson course"
+msgstr "Lesson course"
+
+#. module: refugees_management
+#: model:ir.actions.act_window,name:refugees_management.action_refugee_lesson_teacher
+#: model:ir.ui.menu,name:refugees_management.menu_refugees_course_course_lesson_teacher
+msgid "Lesson teacher"
+msgstr "Lesson teacher"
+
+#. module: refugees_management
+#: view:hr.analytic.timesheet:refugees_management.view_refugee_lesson_form
+msgid "Load list"
+msgstr "Load list"
+
+#. module: refugees_management
+#: model:ir.actions.act_window,name:refugees_management.action_work_apartment
+#: model:ir.ui.menu,name:refugees_management.menu_work_apartment
+msgid "My activity"
+msgstr "My activity"
+
+#. module: refugees_management
+#: model:ir.model,name:refugees_management.model_res_partner
+msgid "Partner"
+msgstr "Partner"
+
+#. module: refugees_management
+#: model:ir.actions.act_window,name:refugees_management.action_apartment_presence
+#: model:ir.ui.menu,name:refugees_management.menu_refugees_apartment_refugees_presence
+#: view:refugee.apartment.presence:refugees_management.view_refugee_aparment_presence_form
+#: view:refugee.apartment.presence:refugees_management.view_refugee_apartment_presence_tree
+#: view:res.partner:refugees_management.view_refugees_partner_form
+#: field:res.partner,presence_ids:0
+msgid "Presence"
+msgstr "Presence"
+
+#. module: refugees_management
+#: field:refugee.apartment.presence,refugee_id:0
+#: field:refugee.lesson.attendant,refugee_id:0
+#: view:res.partner:refugees_management.view_refugees_partner_form
+#: view:res.partner:refugees_management.view_refugees_partner_tree
+#: field:res.partner,is_refugee:0
+msgid "Refugee"
+msgstr "Refugee"
+
+#. module: refugees_management
+#: model:ir.actions.act_window,name:refugees_management.action_refugee_partner
+#: model:ir.ui.menu,name:refugees_management.menu_refugees_apartment_refugees
+msgid "Refugees"
+msgstr "Refugees"
+
+#. module: refugees_management
+#: model:ir.ui.menu,name:refugees_management.menu_refugees_root
+msgid "Refugees management"
+msgstr "Refugees management"
+
+#. module: refugees_management
+#: view:account.analytic.account:refugees_management.view_apartment_form
+msgid "Sigla appartamento"
+msgstr "Sigla appartamento"
+
+#. module: refugees_management
+#: field:account.analytic.account,street:0
+msgid "Street"
+msgstr "Street"
+
+#. module: refugees_management
+#: view:hr.analytic.timesheet:refugees_management.view_refugee_lesson_teacher_calendar
+#: model:ir.actions.act_window,name:refugees_management.action_teacher
+#: model:ir.ui.menu,name:refugees_management.menu_refugees_course_teacher
+#: field:refugee.lesson.attendant,teacher_id:0
+#: view:res.users:refugees_management.view_teacher_form
+#: view:res.users:refugees_management.view_teacher_tree
+msgid "Teacher"
+msgstr "Teacher"
+
+#. module: refugees_management
+#: view:hr.analytic.timesheet:refugees_management.view_refugee_lesson_form
+#: view:hr.analytic.timesheet:refugees_management.view_refugee_lesson_tree
+#: view:hr.analytic.timesheet:refugees_management.view_work_apartment_tree
+msgid "Tempo totale"
+msgstr "Tempo totale"
+
+#. module: refugees_management
+#: model:ir.model,name:refugees_management.model_hr_analytic_timesheet
+msgid "Timesheet Line"
+msgstr "Riga Timesheet"
+
+#. module: refugees_management
+#: field:account.analytic.account,to_date:0
+#: field:refugee.apartment.presence,to_date:0
+msgid "To date"
+msgstr "To date"
+
+#. module: refugees_management
+#: field:account.analytic.account,course_total:0
+msgid "Total hour"
+msgstr "Total hour"
+
+#. module: refugees_management
+#: model:ir.model,name:refugees_management.model_res_users
+msgid "Users"
+msgstr "Utenti"
+
+#. module: refugees_management
+#: view:hr.analytic.timesheet:refugees_management.view_work_apartment_tree
+msgid "Work"
+msgstr "Work"
+
+#. module: refugees_management
+#: model:ir.actions.act_window,name:refugees_management.action_work_apartment_all
+#: model:ir.ui.menu,name:refugees_management.menu_work_apartment_all
+msgid "Work on Apartment"
+msgstr "Work on Apartment"

@@ -31,6 +31,8 @@
         'base',
         'sale',
         'account',
+        'knowledge',
+        'hr_timesheet',
         #'analytic',
         ],
     'init_xml': [],

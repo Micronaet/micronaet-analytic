@@ -38,20 +38,6 @@ from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
 
 _logger = logging.getLogger(__name__)
 
-# -----------------------------------------------------------------------------
-# COMMON
-# -----------------------------------------------------------------------------
-class ResPartner(orm.Model):
-    """ Model name: Partner (for refugee and teacher extra data)
-    """    
-    _inherit = 'res.partner'
-    
-    _columns = {
-        'is_refugee': fields.boolean('Refugee'),
-        'is_teacher': fields.boolean('Teacher'),
-        'is_apartment': fields.boolean('Apartment'),
-        }
-        
 class AccountAnalyticAccount(orm.Model):
     """ Model name: AccountAnalyticAccount (for Apartment and Lesson)
     """    
@@ -89,38 +75,25 @@ class AccountAnalyticAccount(orm.Model):
             'account.analytic.account', 'Default Apartment', 
             domain=[('is_apartment', '=', True)]),
         'teacher_id': fields.many2one(
-            'res.partner', 'Default Teacher', 
-            domain=[('is_teacher', '=', True)]),
+            'res.users', 'Default Teacher', 
+            #domain=[('is_teacher', '=', True)],
+            ),
         'course_total': fields.float('Total hour', digits=(16, 3)),
         }
         
 # -----------------------------------------------------------------------------
 # Course:
 # -----------------------------------------------------------------------------
-class RefugeeLesson(orm.Model):
-    """ Model name: Regufee Lesson
+class HrAnalyticTimesheet(orm.Model):
+    """ Model name: Hr Analytic Timesheet
     """    
-    _name = 'refugee.lesson'
-    _description = 'Lesson'
-    _order = 'date'
-    _rec_name = 'date'
+    _inherit = 'hr.analytic.timesheet'
     
     _columns = {
-        'date': fields.date('Date', required=True),
-        'course_id': fields.many2one(
-            'account.analytic.account', 'Course', 
-            domain=[('is_course', '=', True)], 
-            required=True,
-            ), 
-        
-        # Confirm course elements:    
-        'teacher_id': fields.many2one(
-            'res.partner', 'Teacher', 
-            domain=[('is_teacher', '=', True)], required=True),
-        'apartment_id': fields.many2one(
+        # For lesson timesheet:
+        'course_apartment_id': fields.many2one(
             'account.analytic.account', 'Apartment', 
-            domain=[('is_apartment', '=', True)], required=True),
-        # TODO mo refugee.car    
+            domain=[('is_apartment', '=', True)]),        
         }
 
 class AccountAnalyticAccount(orm.Model):
@@ -130,7 +103,7 @@ class AccountAnalyticAccount(orm.Model):
     
     _columns = {
         'lesson_ids': fields.one2many(
-            'refugee.lesson', 'course_id', 'Lesson'),
+            'hr.analytic.timesheet', 'account_id', 'Lesson'),
         }
 
 class RefugeeLessonAttendant(orm.Model):
@@ -142,19 +115,48 @@ class RefugeeLessonAttendant(orm.Model):
     _rec_name = 'lesson_id'
     
     _columns = {
-        'lesson_id': fields.many2one('refugee.lesson', 'Lesson'),
+        'lesson_id': fields.many2one('hr.analytic.timesheet', 'Lesson'),
         'refugee_id': fields.many2one('res.partner', 'Refugee',
             domain=[('is_refugee', '=', True)],
             ),
+
+        # Related:
         'date': fields.related(
             'lesson_id', 'date', 
-            type='date', string='Date'),    
+            type='date', string='Date', store=True),    
+        'course_id': fields.related(
+            'lesson_id', 'account_id', 
+            type='many2one', relation='account.analytic.account', 
+            string='Course', store=True),
+        'teacher_id': fields.related(
+            'lesson_id', 'user_id', 
+            type='many2one', relation='res.users', 
+            string='Teacher', store=True),            
         }
 
-class RefugeeLesson(orm.Model):
-    """ Model name: RefugeesCourse Relation
+class RefugeeApartmentAttendant(orm.Model):
+    """ Model name: Refugees Apartment presence
     """    
-    _inherit = 'refugee.lesson'
+    _name = 'refugee.apartment.presence'
+    _description = 'Apartment precence'
+    _order = 'from_date'
+    _rec_name = 'refugee_id'
+    
+    _columns = {
+        'apartment_id': fields.many2one(
+            'account.analytic.account', 'Apartment'),
+        'refugee_id': fields.many2one('res.partner', 'Refugee',
+            domain=[('is_refugee', '=', True)],
+            ),
+
+        'from_date': fields.date('From date'),
+        'to_date': fields.date('To date'),            
+        }
+
+class HrAnalyticTimesheet(orm.Model):
+    """ Model name: Hr Analytic Timesheet
+    """    
+    _inherit = 'hr.analytic.timesheet'
     
     _columns = {
         'attendant_ids': fields.one2many(
@@ -185,6 +187,31 @@ class RefugeeApartmentPrecence(orm.Model):
         # Period:
         'from_date': fields.date('From date'),
         'to_date': fields.date('To date'),            
+        }
+    
+# -----------------------------------------------------------------------------
+# COMMON
+# -----------------------------------------------------------------------------
+class ResPartner(orm.Model):
+    """ Model name: Partner (for refugee and teacher extra data)
+    """    
+    _inherit = 'res.partner'
+    
+    _columns = {
+        'is_refugee': fields.boolean('Refugee'),
+        'is_apartment': fields.boolean('Apartment'),
+        'presence_ids': fields.one2many(
+            'refugee.apartment.presence', 'refugee_id', 
+            'Presence'),
+        }
+
+class ResPartner(orm.Model):
+    """ Model name: Partner (for refugee and teacher extra data)
+    """    
+    _inherit = 'res.users'
+    
+    _columns = {
+        'is_teacher': fields.boolean('Is teacher'),
         }
     
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

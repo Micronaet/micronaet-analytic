@@ -1,4 +1,5 @@
 "id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
-access_refugee_lesson_user,refugee.lesson,model_refugee_lesson,base.group_user,1,1,1,1
 access_refugee_lesson_attendant_user,refugee.lesson.attendant,model_refugee_lesson_attendant,base.group_user,1,1,1,1
+access_refugee_apartment_presence_user,refugee.apartment.presence,model_refugee_apartment_pesence,base.group_user,1,1,1,1
+
 

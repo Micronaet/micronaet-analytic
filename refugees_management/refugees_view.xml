@@ -67,7 +67,7 @@
                 <form string="Apartment" version="7.0">        
                     <sheet>
                         <group col="4" colspan="4">
-                            <field name="name" colspan="2"/>
+                            <field name="name" colspan="2" string="Sigla appartamento"/>
                             <field name="apartment_id" />
                             <field name="is_apartment" invisible="1"/>
                             <separator string="Detail:" colspan="4"/>
@@ -97,8 +97,11 @@
                     <field name="name" />
                     <field name="from_date" />
                     <field name="to_date" />
-                    <field name="course_total" />
                     <field name="teacher_id" />
+                    <field name="course_apartment_id" />
+                    <field name="course_total" />
+                    <field name="use_timesheets" invisible="1"/>
+                    <field name="type" invisible="1" />
                 </tree>
             </field>
         </record>
@@ -108,12 +111,19 @@
             <field name="arch" type="xml">
                 <form string="Course" version="7.0">        
                     <sheet>
-                        <group col="4" colspan="4">                          
-                        <field name="name" />
-                        <field name="from_date" />
-                        <field name="to_date" />
-                        <field name="course_total" />
-                        <field name="teacher_id" />    
+                        <group col="4" colspan="4">             
+                            <field name="name" colspan="4"/>
+                            <field name="from_date" />
+                            <field name="to_date" />
+                            <field name="teacher_id" />
+                            <field name="course_apartment_id" />
+                            <field name="course_total" />
+                            <field name="is_course" invisible="1"/>      
+                            <field name="use_timesheets" invisible="1"/>
+                            <field name="type" invisible="1" />
+                                                  
+                            <separator string="Lesson" colspan="4"/>
+                            <field name="lesson_ids" colspan="4" context="{'embedded':True, 'default_account_id':active_id}" nolabel="1"/>                            
                         </group>
                     </sheet>        
                 </form>
@@ -125,47 +135,169 @@
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="view_course_tree"/>
-            <field name="context">{'form_view_ref': 'refugees_management.view_course_form','default_is_course':True}</field>
+            <field name="context">{'form_view_ref':'refugees_management.view_course_form','default_is_course':True,'default_use_timesheets':True,'default_type':'normal'}</field>
             <field name="domain">[('is_course', '=', True)]</field>
         </record>
-        
-        <!-- account.analytic.account > lesson -->
-        <!--<record model="ir.ui.view" id="view_refugee_lesson_tree">
+
+        <!-- hr.analytic.timesheet -->
+        <record model="ir.ui.view" id="view_refugee_lesson_tree">
             <field name="name">refugee.lesson.tree</field>
-            <field name="model">refugee.lesson</field>
+            <field name="model">hr.analytic.timesheet</field>
+            <field name="priority" eval="1"/>            
             <field name="arch" type="xml">
                 <tree string="Lesson">
-                    <field name="course_id" />
-                    <field name="refugee_id" />  
-                    <field name="date" />
+	                <field name="account_id" invisible="context.get('embedded', False)"/>
+	                <field name="date" />
+	                <field name="user_id"  />
+                    <field name="course_apartment_id" />
+	                <field name="name" />
+                    <field name="unit_amount" string="Durata" sum="Tempo totale" widget="float_time" />
+	                <field name="amount" sum="Costo Totale" invisible="1"/>
                 </tree>
             </field>
         </record>
         <record model="ir.ui.view" id="view_refugee_lesson_form">
             <field name="name">refugee.lesson.form</field>
-            <field name="model">refugee.lesson</field>
+            <field name="model">hr.analytic.timesheet</field>
+            <field name="priority" eval="1"/>            
             <field name="arch" type="xml">
                 <form string="Lesson" version="7.0">        
                     <sheet>
-                        <group col="4" colspan="4">
-                            <field name="course_id" />
-                            <field name="refugee_id" />                        
-                            <field name="date" />
+                        <group col="4" colspan="4">             
+	                        <field name="date" on_change="on_change_date(date)" required="1"/>
+	                        <field name="user_id" on_change="on_change_user_id(user_id)" required="1" context="{'default_groups_ref': ['base.group_user']}" options="{'no_open': True, 'no_create': True}" />
+                            <field name="course_apartment_id" />
+	                        <field name="name" required="1" />
+	                        <field name="account_id" domain="[('type','=','normal'),('use_timesheets','=',1)]" context="{'default_use_timesheets': 1, 'default_type': 'normal'}" options="{'no_open': True, 'no_create': True}" required="1" invisible="context.get('embedded', False)"/>
+	                        <field name="unit_amount" string="Durata" on_change="on_change_unit_amount(product_id, unit_amount, False, product_uom_id,journal_id)" sum="Tempo totale" widget="float_time" />
+	                        <field name="product_uom_id" on_change="on_change_unit_amount(product_id, unit_amount, False, product_uom_id,journal_id)" invisible="1" />
+	                        <field name="journal_id" invisible="1" required="1" />
+	                        <field name="amount" sum="Costo Totale" invisible="1" required="1" />
+	                        <field name="general_account_id" invisible="1" required="1" />
+	                        <field name="product_id" on_change="on_change_unit_amount(product_id, unit_amount, False, product_uom_id,journal_id)" domain="[('type','=','service')]" invisible="1" required="1" />
+
+                            <separator string="Attendant" colspan="4"/>
+                            <field name="attendant_ids" colspan="4" context="{'embedded':True}" nolabel="1" />
                         </group>
                     </sheet>        
                 </form>
             </field>
         </record>
+        <record model="ir.ui.view" id="view_refugee_lesson_calendar">
+            <field name="name">refugee.lesson.calendar</field>
+            <field name="model">hr.analytic.timesheet</field>
+            <field name="type">calendar</field>
+            <field name="priority" eval="40"/>
+            <field name="arch" type="xml">
+                <calendar color="account_id" date_start="date" string="Course">
+                    <field name="user_id"/>
+                    <field name="course_apartment_id" />
+                </calendar>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_refugee_lesson_teacher_calendar">
+            <field name="name">refugee.lesson.calendar</field>
+            <field name="model">hr.analytic.timesheet</field>
+            <field name="type">calendar</field>
+            <field name="priority" eval="40"/>
+            <field name="arch" type="xml">
+                <calendar color="user_id" date_start="date" string="Teacher">
+                    <field name="account_id"/>
+                    <field name="course_apartment_id" />
+                </calendar>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_refugee_lesson_apartment_calendar">
+            <field name="name">refugee.lesson.calendar</field>
+            <field name="model">hr.analytic.timesheet</field>
+            <field name="priority" eval="40"/>
+            <field name="type">calendar</field>
+            <field name="arch" type="xml">
+                <calendar color="course_apartment_id" date_start="date" string="Apartment">
+                    <field name="account_id"/>
+                    <field name="user_id" />
+                </calendar>
+            </field>
+        </record>
         <record model="ir.actions.act_window" id="action_refugee_lesson">
             <field name="name">Lesson</field>
-            <field name="res_model">refugee.lesson</field>
+            <field name="res_model">hr.analytic.timesheet</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,calendar</field>
+            <field name="view_id" ref="view_refugee_lesson_tree"/>
+            <field name="context">{'default_use_timesheets': 1, 'default_type': 'normal'}</field>
+            <field name="domain">[]</field>
+        </record>
+        <!--calendar-->
+        <record model="ir.actions.act_window" id="action_refugee_lesson_course">
+            <field name="name">Lesson</field>
+            <field name="res_model">hr.analytic.timesheet</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,calendar</field>
+            <field name="view_id" ref="view_refugee_lesson_calendar"/>
+            <field name="context">{'default_use_timesheets': 1, 'default_type': 'normal'}</field>
+            <field name="domain">[]</field>
+        </record>
+        <record model="ir.actions.act_window" id="action_refugee_lesson_teacher">
+            <field name="name">Lesson teacher</field>
+            <field name="res_model">hr.analytic.timesheet</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,calendar</field>
+            <field name="view_id" ref="view_refugee_lesson_teacher_calendar"/>
+            <field name="context">{'default_use_timesheets': 1, 'default_type': 'normal'}</field>
+            <field name="domain">[]</field>
+        </record>
+        <record model="ir.actions.act_window" id="action_refugee_lesson_apartment">
+            <field name="name">Lesson apartment</field>
+            <field name="res_model">hr.analytic.timesheet</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,calendar</field>
+            <field name="view_id" ref="view_refugee_lesson_apartment_calendar"/>
+            <field name="context">{'default_use_timesheets': 1, 'default_type': 'normal'}</field>
+            <field name="domain">[]</field>
+        </record>
+
+        <!-- refugee.lesson.attendant -->
+        <record model="ir.ui.view" id="view_refugee_lesson_attendant_tree">
+            <field name="name">refugee.lesson.attendant.tree</field>
+            <field name="model">refugee.lesson.attendant</field>
+            <field name="arch" type="xml">
+                <tree string="Attendant" editable="bottom">
+                    <field name="lesson_id" invisible="context.get('embedded', False)"/>
+                    <field name="refugee_id" />
+                    <field name="teacher_id" readonly="1" />
+                    <field name="course_id" readonly="1" />
+                    <field name="date" readonly="1" />
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_refugee_lesson_attendant_form">
+            <field name="name">refugee.lesson.attendant.form</field>
+            <field name="model">refugee.lesson.attendant</field>
+            <field name="arch" type="xml">
+                <form string="Attendant" version="7.0">        
+                    <sheet>
+                        <group col="4" colspan="4">             
+                            <field name="lesson_id" invisible="context.get('embedded', False)"/>
+                            <field name="refugee_id" />
+                            <field name="teacher_id" readonly="1" />
+                            <field name="course_id" readonly="1" />
+                            <field name="date" readonly="1"/>
+                        </group>
+                    </sheet>        
+                </form>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="action_refugee_attendant_lesson">
+            <field name="name">Attendant</field>
+            <field name="res_model">refugee.lesson.attendant</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="view_lesson_tree"/>
+            <field name="view_id" ref="view_refugee_lesson_attendant_tree"/>
             <field name="context">{}</field>
             <field name="domain">[]</field>
-        </record>-->
-        
+        </record>
+
         <menuitem 
             id="menu_refugees_root" 
             name="Refugees management"
@@ -201,14 +333,40 @@
                     action="action_course"
                     sequence="10"
                     />
-                    <!--<menuitem 
+                    <menuitem 
                         parent="menu_refugees_course_course" 
                         id="menu_refugees_course_course_lesson" 
                         action="action_refugee_lesson"
                         sequence="10"
-                        />-->
-                    
-                            
+                        />         
+                        <menuitem 
+                            parent="menu_refugees_course_course_lesson" 
+                            id="menu_refugees_course_course_lesson_teacher" 
+                            action="action_refugee_lesson_teacher"
+                            sequence="10"
+                            />
+                        <menuitem 
+                            parent="menu_refugees_course_course_lesson" 
+                            id="menu_refugees_course_course_lesson_apartment" 
+                            action="action_refugee_lesson_apartment"
+                            sequence="20"
+                            />
+                        <menuitem 
+                            parent="menu_refugees_course_course_lesson" 
+                            id="menu_refugees_course_course_lesson_course" 
+                            action="action_refugee_lesson_course"
+                            sequence="30"
+                            name="Lesson course"
+                            />
+                        
+
+                    <menuitem 
+                        parent="menu_refugees_course_course" 
+                        id="menu_refugees_course_course_lesson_attendant" 
+                        action="action_refugee_attendant_lesson"
+                        sequence="20"
+                        />
+
 </data>
 </openerp>
 

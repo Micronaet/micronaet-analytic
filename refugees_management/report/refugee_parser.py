@@ -86,7 +86,8 @@ class Parser(report_sxw.rml_parse):
                     apartment,
                     [partner for partner in partner_pool.browse(
                         cr, uid, refugee_ids, context=context)],
-                    date,    
+                    date,
+                    len(refugee_ids),
                     ))
         return res
 

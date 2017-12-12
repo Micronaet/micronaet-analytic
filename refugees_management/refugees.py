@@ -149,7 +149,7 @@ class RefugeeApartmentAttendant(orm.Model):
             domain=[('is_refugee', '=', True)],
             ),
 
-        'from_date': fields.date('From date'),
+        'from_date': fields.date('From date', required=True),
         'to_date': fields.date('To date'),            
         }
 

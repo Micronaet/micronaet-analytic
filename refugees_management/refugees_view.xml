@@ -297,7 +297,46 @@
             <field name="context">{}</field>
             <field name="domain">[]</field>
         </record>
-
+        
+        <!-- refugee.apartment.presence -->        
+        <record model="ir.ui.view" id="view_refugee_apartment_presence_tree">
+            <field name="name">refugee.apartment.presence.tree</field>
+            <field name="model">refugee.apartment.presence</field>
+            <field name="arch" type="xml">
+                <tree string="Presence" editable="bottom">     
+                    <field name="apartment_id" />
+                    <field name="refugee_id" />
+                    <field name="from_date" />
+                    <field name="to_date" />
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_refugee_aparment_presence_form">
+            <field name="name">refugee.apartment.presence.form</field>
+            <field name="model">refugee.apartment.presence</field>
+            <field name="arch" type="xml">
+                <form string="Presence" version="7.0">        
+                    <sheet>
+                        <group col="4" colspan="4">
+                            <field name="apartment_id" />
+                            <field name="refugee_id" />
+                            <field name="from_date" />
+                            <field name="to_date" />       
+                        </group>
+                    </sheet>        
+                </form>
+            </field>
+        </record>        
+        <record model="ir.actions.act_window" id="action_apartment_presence">
+            <field name="name">Presence</field>
+            <field name="res_model">refugee.apartment.presence</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_refugee_apartment_presence_tree"/>
+            <field name="context">{}</field>
+            <field name="domain">[]</field>
+        </record>
+        
         <menuitem 
             id="menu_refugees_root" 
             name="Refugees management"
@@ -321,6 +360,13 @@
                     action="action_refugee_partner"
                     sequence="20"
                     />
+                <menuitem 
+                    parent="menu_refugees_apartment" 
+                    id="menu_refugees_apartment_refugees_presence" 
+                    action="action_apartment_presence"
+                    sequence="30"
+                    />
+
             <menuitem 
                 parent="menu_refugees_root" 
                 id="menu_refugees_course" 

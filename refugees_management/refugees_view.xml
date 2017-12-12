@@ -273,7 +273,7 @@
             <field name="view_mode">tree,form,calendar</field>
             <field name="view_id" ref="view_refugee_lesson_tree"/>
             <field name="context">{'default_use_timesheets': 1, 'default_type': 'normal'}</field>
-            <field name="domain">[]</field>
+            <field name="domain">[('account_id.is_course', '=', True)]</field>
         </record>
         <!--calendar-->
         <record model="ir.actions.act_window" id="action_refugee_lesson_course">
@@ -283,7 +283,7 @@
             <field name="view_mode">tree,form,calendar</field>
             <field name="view_id" ref="view_refugee_lesson_calendar"/>
             <field name="context">{'default_use_timesheets': 1, 'default_type': 'normal'}</field>
-            <field name="domain">[]</field>
+            <field name="domain">[('account_id.is_course', '=', True)]</field>
         </record>
         <record model="ir.actions.act_window" id="action_refugee_lesson_teacher">
             <field name="name">Lesson teacher</field>
@@ -292,7 +292,7 @@
             <field name="view_mode">tree,form,calendar</field>
             <field name="view_id" ref="view_refugee_lesson_teacher_calendar"/>
             <field name="context">{'default_use_timesheets': 1, 'default_type': 'normal'}</field>
-            <field name="domain">[]</field>
+            <field name="domain">[('account_id.is_course', '=', True)]</field>
         </record>
         <record model="ir.actions.act_window" id="action_refugee_lesson_apartment">
             <field name="name">Lesson apartment</field>
@@ -301,7 +301,7 @@
             <field name="view_mode">tree,form,calendar</field>
             <field name="view_id" ref="view_refugee_lesson_apartment_calendar"/>
             <field name="context">{'default_use_timesheets': 1, 'default_type': 'normal'}</field>
-            <field name="domain">[]</field>
+            <field name="domain">[('account_id.is_course', '=', True)]</field>
         </record>
 
         <!-- refugee.lesson.attendant -->

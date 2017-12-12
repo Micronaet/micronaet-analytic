@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-12-12 11:16+0000\n"
-"PO-Revision-Date: 2017-12-12 12:16+0100\n"
+"PO-Revision-Date: 2017-12-12 12:26+0100\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -54,7 +54,7 @@ msgstr "Appartamento"
 #: model:ir.model,name:refugees_management.model_refugee_apartment_presence
 #: model:ir.model,name:refugees_management.model_refugee_id
 msgid "Apertment presence"
-msgstr "Apertment presence"
+msgstr "Presenze appartamento"
 
 #. module: refugees_management
 #: view:hr.analytic.timesheet:refugees_management.view_refugee_lesson_form
@@ -64,12 +64,12 @@ msgstr "Apertment presence"
 #: view:refugee.lesson.attendant:refugees_management.view_refugee_lesson_attendant_form
 #: view:refugee.lesson.attendant:refugees_management.view_refugee_lesson_attendant_tree
 msgid "Attendant"
-msgstr "Attendant"
+msgstr "Presenti"
 
 #. module: refugees_management
 #: field:account.analytic.account,city:0
 msgid "City"
-msgstr "City"
+msgstr "Città"
 
 #. module: refugees_management
 #: model:ir.ui.menu,name:refugees_management.menu_refugees_apartment_apartment_admin
@@ -95,39 +95,39 @@ msgstr "Costo Totale"
 #: model:ir.ui.menu,name:refugees_management.menu_refugees_course_course
 #: field:refugee.lesson.attendant,course_id:0
 msgid "Course"
-msgstr "Course"
+msgstr "Corso"
 
 #. module: refugees_management
 #: field:refugee.apartment.presence,create_uid:0
 #: field:refugee.lesson.attendant,create_uid:0
 msgid "Created by"
-msgstr "Created by"
+msgstr "Creata da"
 
 #. module: refugees_management
 #: field:refugee.apartment.presence,create_date:0
 #: field:refugee.lesson.attendant,create_date:0
 msgid "Created on"
-msgstr "Created on"
+msgstr "Creato il "
 
 #. module: refugees_management
 #: field:refugee.lesson.attendant,date:0
 msgid "Date"
-msgstr "Date"
+msgstr "Data"
 
 #. module: refugees_management
 #: field:account.analytic.account,course_apartment_id:0
 msgid "Default Apartment"
-msgstr "Default Apartment"
+msgstr "Appartamento Predefinito"
 
 #. module: refugees_management
 #: field:account.analytic.account,teacher_id:0
 msgid "Default Teacher"
-msgstr "Default Teacher"
+msgstr "Insegnante Predefinito"
 
 #. module: refugees_management
 #: view:account.analytic.account:refugees_management.view_apartment_form
 msgid "Detail:"
-msgstr "Detail:"
+msgstr "Dettagli:"
 
 #. module: refugees_management
 #: view:hr.analytic.timesheet:refugees_management.view_refugee_lesson_form
@@ -140,7 +140,7 @@ msgstr "Durata"
 #: field:account.analytic.account,from_date:0
 #: field:refugee.apartment.presence,from_date:0
 msgid "From date"
-msgstr "From date"
+msgstr "Dalla data"
 
 #. module: refugees_management
 #: field:refugee.apartment.presence,id:0 field:refugee.lesson.attendant,id:0
@@ -150,19 +150,19 @@ msgstr "ID"
 #. module: refugees_management
 #: field:res.users,is_teacher:0
 msgid "Is teacher"
-msgstr "Is teacher"
+msgstr "E' insegnante"
 
 #. module: refugees_management
 #: field:refugee.apartment.presence,write_uid:0
 #: field:refugee.lesson.attendant,write_uid:0
 msgid "Last Updated by"
-msgstr "Last Updated by"
+msgstr "Ultimo aggiornamento di"
 
 #. module: refugees_management
 #: field:refugee.apartment.presence,write_date:0
 #: field:refugee.lesson.attendant,write_date:0
 msgid "Last Updated on"
-msgstr "Last Updated on"
+msgstr "Ultimo aggiornamento il"
 
 #. module: refugees_management
 #: view:account.analytic.account:refugees_management.view_course_form
@@ -176,40 +176,40 @@ msgstr "Last Updated on"
 #: model:ir.ui.menu,name:refugees_management.menu_refugees_course_course_lesson
 #: field:refugee.lesson.attendant,lesson_id:0
 msgid "Lesson"
-msgstr "Lesson"
+msgstr "Lezione"
 
 #. module: refugees_management
 #: model:ir.actions.act_window,name:refugees_management.action_refugee_lesson_apartment
 #: model:ir.ui.menu,name:refugees_management.menu_refugees_course_course_lesson_apartment
 msgid "Lesson apartment"
-msgstr "Lesson apartment"
+msgstr "Appartamento della lezione"
 
 #. module: refugees_management
 #: model:ir.model,name:refugees_management.model_refugee_lesson_attendant
 msgid "Lesson attendant"
-msgstr "Lesson attendant"
+msgstr "Presenti a lezione"
 
 #. module: refugees_management
 #: model:ir.ui.menu,name:refugees_management.menu_refugees_course_course_lesson_course
 msgid "Lesson course"
-msgstr "Lesson course"
+msgstr "Corso della lezione"
 
 #. module: refugees_management
 #: model:ir.actions.act_window,name:refugees_management.action_refugee_lesson_teacher
 #: model:ir.ui.menu,name:refugees_management.menu_refugees_course_course_lesson_teacher
 msgid "Lesson teacher"
-msgstr "Lesson teacher"
+msgstr "Insegnante della lezione"
 
 #. module: refugees_management
 #: view:hr.analytic.timesheet:refugees_management.view_refugee_lesson_form
 msgid "Load list"
-msgstr "Load list"
+msgstr "Carica lista"
 
 #. module: refugees_management
 #: model:ir.actions.act_window,name:refugees_management.action_work_apartment
 #: model:ir.ui.menu,name:refugees_management.menu_work_apartment
 msgid "My activity"
-msgstr "My activity"
+msgstr "Mie attività"
 
 #. module: refugees_management
 #: model:ir.model,name:refugees_management.model_res_partner
@@ -224,7 +224,7 @@ msgstr "Partner"
 #: view:res.partner:refugees_management.view_refugees_partner_form
 #: field:res.partner,presence_ids:0
 msgid "Presence"
-msgstr "Presence"
+msgstr "Presenze"
 
 #. module: refugees_management
 #: field:refugee.apartment.presence,refugee_id:0
@@ -233,18 +233,18 @@ msgstr "Presence"
 #: view:res.partner:refugees_management.view_refugees_partner_tree
 #: field:res.partner,is_refugee:0
 msgid "Refugee"
-msgstr "Refugee"
+msgstr "Rifugiato"
 
 #. module: refugees_management
 #: model:ir.actions.act_window,name:refugees_management.action_refugee_partner
 #: model:ir.ui.menu,name:refugees_management.menu_refugees_apartment_refugees
 msgid "Refugees"
-msgstr "Refugees"
+msgstr "Rifugiati"
 
 #. module: refugees_management
 #: model:ir.ui.menu,name:refugees_management.menu_refugees_root
 msgid "Refugees management"
-msgstr "Refugees management"
+msgstr "Gestione Rifugiati"
 
 #. module: refugees_management
 #: view:account.analytic.account:refugees_management.view_apartment_form
@@ -254,7 +254,7 @@ msgstr "Sigla appartamento"
 #. module: refugees_management
 #: field:account.analytic.account,street:0
 msgid "Street"
-msgstr "Street"
+msgstr "Via"
 
 #. module: refugees_management
 #: view:hr.analytic.timesheet:refugees_management.view_refugee_lesson_teacher_calendar
@@ -264,7 +264,7 @@ msgstr "Street"
 #: view:res.users:refugees_management.view_teacher_form
 #: view:res.users:refugees_management.view_teacher_tree
 msgid "Teacher"
-msgstr "Teacher"
+msgstr "Insegnante"
 
 #. module: refugees_management
 #: view:hr.analytic.timesheet:refugees_management.view_refugee_lesson_form
@@ -282,12 +282,12 @@ msgstr "Riga Timesheet"
 #: field:account.analytic.account,to_date:0
 #: field:refugee.apartment.presence,to_date:0
 msgid "To date"
-msgstr "To date"
+msgstr "Alla data"
 
 #. module: refugees_management
 #: field:account.analytic.account,course_total:0
 msgid "Total hour"
-msgstr "Total hour"
+msgstr "Totale ore"
 
 #. module: refugees_management
 #: model:ir.model,name:refugees_management.model_res_users
@@ -297,10 +297,10 @@ msgstr "Utenti"
 #. module: refugees_management
 #: view:hr.analytic.timesheet:refugees_management.view_work_apartment_tree
 msgid "Work"
-msgstr "Work"
+msgstr "Lavoro"
 
 #. module: refugees_management
 #: model:ir.actions.act_window,name:refugees_management.action_work_apartment_all
 #: model:ir.ui.menu,name:refugees_management.menu_work_apartment_all
 msgid "Work on Apartment"
-msgstr "Work on Apartment"
+msgstr "Lavoro appartamenti"

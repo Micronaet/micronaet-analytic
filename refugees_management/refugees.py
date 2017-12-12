@@ -43,6 +43,32 @@ class AccountAnalyticAccount(orm.Model):
     """    
     _inherit = 'account.analytic.account'
     
+    def get_refugees_per_day(
+            self, cr, uid, apartment_id, date, return_total=True, 
+            context=None):
+        ''' Search total presence for apartment this date
+        '''
+        presence_pool = self.pool.get('refugee.apartment.presence')
+        
+        domain = [
+            # Apartent:
+            ('apartment_id', '=', apartment_id),
+            
+            # Range of date:
+            ('from_date', '<=', date),
+            '|',
+            ('to_date', '>=', date),
+            ('to_date', '=', False),            
+            ]
+        
+        presence_ids = presence_pool.search(cr, uid, domain, context=context)
+        if return_total:
+            return len(presence_ids)
+        
+        # else return refugee list:
+        return [item.refugee_id.id for item in presence_pool.browse(
+            cr, uid, presence_ids, context=context)]
+        
     _columns = {
         # ---------------------------------------------------------------------
         # Apartment:
@@ -89,6 +115,33 @@ class HrAnalyticTimesheet(orm.Model):
     """    
     _inherit = 'hr.analytic.timesheet'
     
+    def load_presence_attendee(self, cr, uid, ids, context=None):
+        ''' Load current refugee in apartment 
+        '''        
+        account_pool = self.pool.get('account.analytic.account')
+        attendant_pool = self.pool.get('refugee.lesson.attendant')
+        
+        lesson_proxy = self.browse(cr, uid, ids, context=context)[0]
+
+        # Delete previous attendant:
+        attendant_ids = [item.id for item in lesson_proxy.attendant_ids]
+        attendant_pool.unlink(cr, uid, attendant_ids, context=context)
+        
+        # Get list of attendant:        
+        refugee_ids = account_pool.get_refugees_per_day(cr, uid, 
+            lesson_proxy.course_apartment_id.id, 
+            lesson_proxy.date, 
+            return_total=False, 
+            context=context)
+        
+        # Create attandant:
+        for refugee_id in refugee_ids: 
+            attendant_pool.create(cr, uid, {
+                'refugee_id': refugee_id,
+                'lesson_id': ids[0],
+                }, context=context)
+        return True
+        
     _columns = {
         # For lesson timesheet:
         'course_apartment_id': fields.many2one(

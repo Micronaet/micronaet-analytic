@@ -33,6 +33,7 @@
         'account',
         'knowledge',
         'hr_timesheet',
+        'document',
         #'analytic',
         ],
     'init_xml': [],

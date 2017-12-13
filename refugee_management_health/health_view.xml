@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="view_res_partner_health_tree">
+            <field name="name">res.partner.health.tree</field>
+            <field name="model">res.partner.health</field>
+            <field name="arch" type="xml">
+                <tree string="Refugee health">        
+                    <field name="name" />
+                    <field name="date" />
+                    <field name="doctor" />
+                    <field name="diagnose" />
+                    <field name="recipe" />
+                    <field name="note" />
+                    <button name="open_detail" string="Detail" type="object" />
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_res_partner_health_form">
+            <field name="name">res.partner.health.form</field>
+            <field name="model">res.partner.health</field>
+            <field name="arch" type="xml">
+                <form string="Refugee health" version="7.0">        
+                    <sheet>
+                        <group col="4" colspan="4">
+                            <field name="name" />
+                            <field name="date" />
+                            <field name="doctor" />
+                            <field name="diagnose" />
+                            <field name="recipe" />
+                            <field name="note" />    
+                        </group>
+                    </sheet>        
+                </form>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_res_partner_health_page_form">
+            <field name="name">res.partner.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="refugees_management.view_refugees_partner_form"/>
+            <field name="arch" type="xml">
+                <page string="Presence" position="after">
+                        <page string="Health">
+                            <group colspan="4" col="4">
+                                <field name="health_ids" colspan="4" nolabel="1"/>
+                            </group>
+                        </page>                
+                </page>
+            </field>
+        </record>
+    </data>
+</openerp>
+

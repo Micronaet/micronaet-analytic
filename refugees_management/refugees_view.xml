@@ -80,12 +80,17 @@
                 <form string="Apartment" version="7.0">        
                     <sheet>
                         <group col="4" colspan="4">
-                            <field name="name" string="Sigla appartamento"/>
-                            <field name="code" string="Account Code" />                            
-                            <field name="apartment_id" />
-                            <!--TODO remove
-                            <field name="use_timesheets" />
-                            <field name="type" />-->
+                            <group col="2" colspan="2">                        
+                                <field name="image" widget="image" nolabel="1"/>
+                            </group>
+                            <group col="2" colspan="2">                        
+                                <field name="name" string="Sigla appartamento"/>
+                                <field name="code" string="Account Code" />                            
+                                <field name="apartment_id" />
+                                <!--TODO remove
+                                <field name="use_timesheets" />
+                                <field name="type" />-->
+                            </group>
                             <separator string="Detail:" colspan="4"/>
                             <field name="street" />
                             <field name="city" />
@@ -95,13 +100,53 @@
                 </form>
             </field>
         </record>
+        <record model="ir.ui.view" id="view_account_analytic_account_kanban">
+            <field name="name">account.analytic.account.kanban</field>
+            <field name="model">account.analytic.account</field>
+            <field name="arch" type="xml">
+                <kanban>
+                    <field name="name" string="Sigla appartamento"/>
+                    <field name="code" string="Account Code" />                            
+                    <field name="apartment_id" />
+                    <field name="street" />
+                    <field name="city" />
+                    <field name="image" />
+                    <field name="total_refugee_today" />
+                    <field name="image_small" />
+                    <field name="is_apartment" />
+                    
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_vignette oe_semantic_html_override">
+                                <a type="open">
+                                    <img t-att-src="kanban_image('account.analytic.account', 'image_small', record.id.value)" class="oe_kanban_image"/>
+                                </a>
+                                <div class="oe_kanban_details">
+                                    <h4 class="oe_partner_heading">
+                                        <a type="open">
+                                            <field name="name"/>[# Rif. <field name="total_refugee_today" />]<br/>
+                                        </a>
+                                    </h4>  
+                                        Codice: <field name="code" /><br/>
+                                        Via: <field name="street" /><br/>
+                                        Città: <field name="city" /><br/>                                
+                                </div>
+                            </div>
+
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+	
+       
         <!--TODO search-->
         <record model="ir.actions.act_window" id="action_apartment">
             <field name="name">Apartment</field>
             <field name="res_model">account.analytic.account</field>
-            <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="view_apartment_tree"/>
-            <field name="context">{'form_view_ref': 'refugees_management.view_apartment_form','default_is_apartment':True,'default_use_timesheets':True,'default_type':'normal'}</field>
+            <field name="view_mode">tree,form,kanban</field>
+            <field name="view_id" ref="view_account_analytic_account_kanban"/>
+            <field name="context">{'tree_view_ref': 'refugee_management.view_apartment_tree', 'form_view_ref': 'refugees_management.view_apartment_form','default_is_apartment':True,'default_use_timesheets':True,'default_type':'normal'}</field>
             <field name="domain">[('is_apartment', '=', True)]</field>
         </record>
 

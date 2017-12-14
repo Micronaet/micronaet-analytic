@@ -85,6 +85,7 @@ class AccountAnalyticAccount(orm.Model):
         'city': fields.related(
             'apartment_id', 'city',
             type='char', string='City', readonly=True),
+        #'apartment_total': fields.float('Max refugee'),
         # TODO extra fields from res.partner    
         
         # ---------------------------------------------------------------------
@@ -153,8 +154,54 @@ class AccountAnalyticAccount(orm.Model):
     """ Model name: AccountAnalyticAccount (for Apartment and Lesson)
     """    
     _inherit = 'account.analytic.account'
+
+    def _get_total_refugee_today(self, cr, uid, ids, fields, args, context=None):
+        ''' Fields function for calculate 
+        '''
+        res = {}
+        today = datetime.now().strftime(DEFAULT_SERVER_DATE_FORMAT)
+        for item_id in ids:
+            res[item_id] = self.get_refugees_per_day(
+                cr, uid, item_id, today, 
+                return_total=True, context=context,
+                )
+        return res        
+
+    @api.multi
+    def _get_image(self, name, args):
+        return dict((p.id, tools.image_get_resized_images(p.image)) for p in self)
+
+    @api.one
+    def _set_image(self, name, value, args):
+        return self.write({'image': tools.image_resize_image_big(value)})
+
+    @api.multi
+    def _has_image(self, name, args):
+        return dict((p.id, bool(p.image)) for p in self)
     
     _columns = {
+        'total_refugee_today': fields.function(
+            _get_total_refugee_today, method=True, 
+            type='integer', string='Tot. ref.', store=False), 
+                        
+        'image': fields.binary('Image', filters=None),
+        'image_small': fields.function(
+            _get_image, 
+            fnct_inv=_set_image,
+            string='Small-sized image', type='binary', multi='_get_image',
+            store={
+                'account.analytic.account': (lambda self, cr, uid, ids, c={}: ids, ['image'], 10),
+            },
+            help='Resize image'),
+        'image_medium': fields.function(
+            _get_image, 
+            fnct_inv=_set_image,
+            string='Small-sized image', type='binary', multi='_get_image',
+            store={
+                'account.analytic.account': (lambda self, cr, uid, ids, c={}: ids, ['image'], 10),
+            },
+            help='Resize image'),
+            
         'lesson_ids': fields.one2many(
             'hr.analytic.timesheet', 'account_id', 'Lesson'),
         }

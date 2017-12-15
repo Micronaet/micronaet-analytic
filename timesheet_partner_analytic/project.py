@@ -38,6 +38,12 @@ from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
 
 _logger = logging.getLogger(__name__)
 
+selection_state = [
+    ('green', 'Green (< 90%)'),
+    ('yellow', 'Yellow (>= 90% <100%)'),
+    ('red', 'Yellow (>=100%)'),
+    ]
+
 class AccountAnalyticAccount(orm.Model):
     """ Model name: AccountAnalyticAccount
     """
@@ -79,7 +85,7 @@ class ProjectProject(orm.Model):
     """
     
     _inherit = 'project.project'
-
+    
     # Workflow override:    
     def set_done(self, cr, uid, ids, context=None):
         current_proxy = self.browse(cr, uid, ids, context=context)[0]
@@ -119,7 +125,16 @@ class ProjectProject(orm.Model):
                     res[item.id]['all_effective_hours'] / \
                         res[item.id]['all_planned_hours']
             else:
-                res[item.id]['all_progress_rate'] = 0.0                   
+                res[item.id]['all_progress_rate'] = 0.0   
+                
+            # Progress state:
+            if res[item.id]['all_progress_rate'] < 90.0:
+                res[item.id]['progress_state'] = 'green'
+            elif res[item.id]['all_progress_rate'] < 100.0:
+                res[item.id]['progress_state'] = 'yellow'
+            else: # >= 100   
+                res[item.id]['progress_state'] = 'red'
+                
         return res
 
     _columns = {
@@ -148,6 +163,12 @@ class ProjectProject(orm.Model):
             _progress_rate_total, method=True, 
             type='float', string='Effective total', store=False,
             multi=True),
+        'progress_state': fields.function(
+            _progress_rate_total, method=True, 
+            type='selection', selection=selection_state,
+            string='Progress state', store=False,
+            multi=True),
         }
+            
     
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

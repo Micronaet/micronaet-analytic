@@ -42,12 +42,50 @@
 	                <field name="all_planned_hours" widget="float_time" />
 	                <field name="all_effective_hours" widget="float_time" />
 	                <field name="all_progress_rate" widget="progressbar" />
+	                <field name="progress_state" />
 	                <field name="planned_total" />
 	                <field name="state" />
                 </tree>
             </field>
         </record>
-
+        <record model="ir.ui.view" id="view_project_new_status_progress_state_tree">
+            <field name="name">project.project.progress.tree</field>
+            <field name="model">project.project</field>
+            <field name="priority" eval="20" />
+            <field name="arch" type="xml">
+                <tree colors="green:progress_state=='green';yellow:progress_state=='yellow';red:progress_state=='red'" string="Projects state">
+	                <field name="sequence" widget="handle" />
+	                <field name="date" invisible="1" />
+	                <field name="name" string="Project name" />
+	                <field name="user_id" string="Project Manager" />
+	                <field name="partner_id" string="Contact" />
+	                <field name="parent_id" string="Genitore" invisible="1" />
+	                <field name="planned_manual" widget="float_time" string="Manual total"/>
+	                <field name="all_planned_hours" widget="float_time" />
+	                <field name="all_effective_hours" widget="float_time" />
+	                <field name="all_progress_rate" widget="progressbar" invisible="1"/>
+	                <field name="progress_state" />
+	                <field name="planned_total" />
+	                <field name="state" />
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_project_status_search">
+            <field name="name">project.project.search</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="project.view_project_project_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[1]" position="before">
+                    <filter name="progress_state_green" string="Green" domain="[('progress_state','=','green')]"/>
+                    <filter name="progress_state_yellow" string="Yellow" domain="[('progress_state','=','yellow')]"/>
+                    <filter name="progress_state_red" string="Red" domain="[('progress_state','=','red')]"/>
+                    <filter name="progress_state_check" string="Check state" domain="[('progress_state','!=','green')]"/>
+                </xpath>
+                <xpath expr="//group[1]/filter[1]" position="before">
+                    <filter name="group_progress_state" string="Progress state" context="{'group_by': 'progress_state'}"/>
+                </xpath>
+            </field>
+        </record>
         <record model="ir.ui.view" id="view_insert_timesheet_hide_user_tree">
             <field name="name">hr.analytic.timesheet.tree</field>
             <field name="model">hr.analytic.timesheet</field>
@@ -58,20 +96,19 @@
                     <attribute name="invisible">1</attribute>
                 </field>
             </field>
-        </record>
-                
-        <record model="ir.actions.act_window" id="action_project_project_warning_task_90">
+        </record>                
+        <record model="ir.actions.act_window" id="action_project_project_warning_task_state">
             <field name="name">Pratiche a termine</field>
             <field name="res_model">project.project</field>
-            <field name="view_mode">tree,form,kanban</field>
-            <field name="view_id" ref="view_project_new_status_tree"/>
-            <field name="context">{}</field>
-            <field name="domain">[("all_progress_rate", "&gt;", "90")]</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_project_new_status_progress_state_tree"/>
+            <field name="context">{'search_default_progress_state_check':True}</field>
+            <field name="domain">[]</field>
         </record>
         <menuitem 
             parent="project.menu_action_view_task" 
-            id="menu_project_project_warning_task_90" 
-            action="action_project_project_warning_task_90"
+            id="menu_project_project_warning_task_state" 
+            action="action_project_project_warning_task_state"
             />
         
     </data>

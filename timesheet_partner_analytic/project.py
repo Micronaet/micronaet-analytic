@@ -137,6 +137,28 @@ class ProjectProject(orm.Model):
                 
         return res
 
+    # -------------------------------------------------------------------------
+    # Store function:
+    # -------------------------------------------------------------------------
+    def _store_refresh_project_project(self, cr, uid, ids, context=None):
+        ''' Change planned_manual in project.project
+        '''
+        _logger.warning('Update planned_manual in project.project')
+        return ids
+
+    def _store_refresh_project_task(self, cr, uid, ids, context=None):
+        ''' Change planned_manual in project.task
+        '''
+        _logger.warning('Update project_id, planned_hours in project.task')
+        
+        project_ids = []
+        for task in self.browse(cr, uid, ids, context=context):
+            if task.project_id.id not in project_ids:
+                project_ids.append(task.project_id.id)
+        # TODO debug        
+        return project_ids
+        
+        
     _columns = {
         # instead of planned_hours
         'planned_manual': fields.float(
@@ -166,7 +188,19 @@ class ProjectProject(orm.Model):
         'progress_state': fields.function(
             _progress_rate_total, method=True, 
             type='selection', selection=selection_state,
-            string='Progress state', store=False,
+            string='Progress state', store={
+                'project.project': (
+                    _store_refresh_project_project, 
+                    ['planned_manual'], 
+                    10,
+                    ),
+                'project.task': (
+                    _store_refresh_project_task, 
+                    ['planned_hours', 'project_id'], 
+                    10,
+                    ),              
+                },
+                # TODO     
             multi=True),
         }
             

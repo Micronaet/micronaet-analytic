@@ -150,12 +150,10 @@ class ProjectProject(orm.Model):
         ''' Change planned_manual in project.task
         '''
         _logger.warning('Update project_id, planned_hours in project.task')
-        
         project_ids = []
         for task in self.browse(cr, uid, ids, context=context):
             if task.project_id.id not in project_ids:
                 project_ids.append(task.project_id.id)
-        # TODO debug        
         return project_ids
         
         

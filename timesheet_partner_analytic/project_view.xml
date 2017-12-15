@@ -53,7 +53,7 @@
             <field name="model">project.project</field>
             <field name="priority" eval="20" />
             <field name="arch" type="xml">
-                <tree colors="green:progress_state=='green';yellow:progress_state=='yellow';red:progress_state=='red'" string="Projects state">
+                <tree colors="green:progress_state=='green';orange:progress_state=='yellow';red:progress_state=='red'" string="Projects state">
 	                <field name="sequence" widget="handle" />
 	                <field name="date" invisible="1" />
 	                <field name="name" string="Project name" />

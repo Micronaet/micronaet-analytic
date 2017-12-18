@@ -35,6 +35,7 @@
     'init_xml': [],
     'demo': [],
     'data': [
+        'data/user_model.xml',
         'wizard/new_employee_view.xml',
         ],
     'active': False,

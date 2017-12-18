@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>  
+        <record model="res.users" id="data_res_users_model">
+            <field name="name">Model for new employee</field>
+            <field name="password">Nothing</field><!--TODO check problem with password-->
+            <field name="login">_model</field>
+            <field name="email">odoo@micronaet.com</field>
+        </record>
+    </data>
+</openerp>
+

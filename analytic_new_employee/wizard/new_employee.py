@@ -71,7 +71,6 @@ class HrEmployeeNewWizard(orm.TransientModel):
             'login': wiz_browse.email,
             'password': wiz_browse.password,
             }, context=context)
-
         
         # ---------------------------------------------------------------------
         # B. Create product.product:
@@ -79,7 +78,7 @@ class HrEmployeeNewWizard(orm.TransientModel):
         product_id = product_pool.create(cr, uid, {
             'name': _('Hour cost of  %s') % wiz_browse.name,
             'type': 'service',
-            'standard_price': cost,
+            'standard_price': wiz_browse.cost,
             }, context=context)
         
 
@@ -88,7 +87,8 @@ class HrEmployeeNewWizard(orm.TransientModel):
         # ---------------------------------------------------------------------
         employee_id = employee_pool.create(cr, uid, {
             'name': wiz_browse.name,
-            
+            'user_id': user_id,
+            'product_id': product_id,                    
             }, context=context)
         
         return {

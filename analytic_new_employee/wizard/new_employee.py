@@ -65,11 +65,23 @@ class HrEmployeeNewWizard(orm.TransientModel):
         # ---------------------------------------------------------------------
         # A. Create res.users:
         # ---------------------------------------------------------------------
+        model_ids = user_pool.search(cr, uid, [
+            ('login', '=', '_model'),
+            ], context=context)
+        if not model_ids:
+            raise osv.except_osv(
+                _('No user model'), 
+                _('Error reinstall module becasue model user not present!'),
+                )              
+        model_proxy = user_pool.browse(cr, uid, model_ids, context=context)[0]
+        groups_id = [group.id for group in model_proxy.groups_id]
+        
         user_id = user_pool.create(cr, uid, {
             'name': wiz_browse.name,
             'email': wiz_browse.email,
             'login': wiz_browse.email,
             'password': wiz_browse.password,
+            'groups_id': [(6, False, groups_id)],
             }, context=context)
         
         # ---------------------------------------------------------------------
@@ -92,8 +104,19 @@ class HrEmployeeNewWizard(orm.TransientModel):
             }, context=context)
         
         return {
-            'type': 'ir.actions.act_window_close'
-            }
+            'type': 'ir.actions.act_window',
+            'name': _('Employee created'),
+            'view_type': 'form',
+            'view_mode': 'form,tree,kanban',
+            'res_id': employee_id,
+            'res_model': 'hr.employee',
+            #'view_id': view_id, # False
+            'views': [(False, 'form'), (False, 'tree')],
+            'domain': [],
+            'context': context,
+            'target': 'current', # 'new'
+            'nodestroy': False,
+            }        
 
     _columns = {
         'name': fields.char('First name Last name', size=80, required=True),

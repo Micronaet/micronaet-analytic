@@ -19,7 +19,7 @@
             </field>
         </record>
         <record model="ir.actions.act_window" id="action_new_employee">
-            <field name="name">hr.new.employee</field>
+            <field name="name">New user</field>
             <field name="res_model">hr.employee.new.wizard</field>
             <field name="view_type">form</field>
             <field name="view_mode">form</field>
@@ -31,8 +31,7 @@
         <menuitem 
             parent="hr.menu_hr_main" 
             id="menu_action_new_employee" 
-            action="action_new_employee"/>
-         
+            action="action_new_employee"/>         
     </data>
 </openerp>
 

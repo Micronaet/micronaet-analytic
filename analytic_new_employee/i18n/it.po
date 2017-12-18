@@ -1,0 +1,103 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* analytic_new_employee
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-12-18 16:26+0000\n"
+"PO-Revision-Date: 2017-12-18 17:32+0100\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"Language: it\n"
+"X-Generator: Poedit 1.6.10\n"
+
+#. module: analytic_new_employee
+#: field:hr.employee.new.wizard,create_uid:0
+msgid "Created by"
+msgstr "Creato da"
+
+#. module: analytic_new_employee
+#: field:hr.employee.new.wizard,create_date:0
+msgid "Created on"
+msgstr "Creato il"
+
+#. module: analytic_new_employee
+#: field:hr.employee.new.wizard,email:0
+msgid "Email"
+msgstr "Email"
+
+#. module: analytic_new_employee
+#: code:addons/analytic_new_employee/wizard/new_employee.py:108
+#, python-format
+msgid "Employee created"
+msgstr "Impiegato creato"
+
+#. module: analytic_new_employee
+#: code:addons/analytic_new_employee/wizard/new_employee.py:74
+#, python-format
+msgid "Error reinstall module becasue model user not present!"
+msgstr "Errore, reinstallare il modulo perchè l'utente modello non è presente!"
+
+#. module: analytic_new_employee
+#: field:hr.employee.new.wizard,name:0
+msgid "First name Last name"
+msgstr "Nome Cognome"
+
+#. module: analytic_new_employee
+#: field:hr.employee.new.wizard,cost:0
+msgid "Hour Cost"
+msgstr "Costo orario"
+
+#. module: analytic_new_employee
+#: code:addons/analytic_new_employee/wizard/new_employee.py:91
+#, python-format
+msgid "Hour cost of  %s"
+msgstr "Costo orario di %s"
+
+#. module: analytic_new_employee
+#: field:hr.employee.new.wizard,id:0
+msgid "ID"
+msgstr "ID"
+
+#. module: analytic_new_employee
+#: view:hr.employee.new.wizard:analytic_new_employee.view_hr_employee_new_wizard_form
+msgid "Insert"
+msgstr "Inserisci"
+
+#. module: analytic_new_employee
+#: field:hr.employee.new.wizard,write_uid:0
+msgid "Last Updated by"
+msgstr "Ultimo aggiornamento di"
+
+#. module: analytic_new_employee
+#: field:hr.employee.new.wizard,write_date:0
+msgid "Last Updated on"
+msgstr "Ultimo aggiornamento il "
+
+#. module: analytic_new_employee
+#: view:hr.employee.new.wizard:analytic_new_employee.view_hr_employee_new_wizard_form
+msgid "New Employee"
+msgstr "Nuovo impiegato"
+
+#. module: analytic_new_employee
+#: code:addons/analytic_new_employee/wizard/new_employee.py:73
+#, python-format
+msgid "No user model"
+msgstr "Non utente modello"
+
+#. module: analytic_new_employee
+#: field:hr.employee.new.wizard,password:0
+msgid "Password"
+msgstr "Password"
+
+#. module: analytic_new_employee
+#: model:ir.actions.act_window,name:analytic_new_employee.action_new_employee
+#: model:ir.ui.menu,name:analytic_new_employee.menu_action_new_employee
+msgid "hr.new.employee"
+msgstr "Nuovo Impiegato"

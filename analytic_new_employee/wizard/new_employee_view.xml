@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="view_hr_employee_new_wizard_form">
+            <field name="name">hr.employee.new.wizard.form</field>
+            <field name="model">hr.employee.new.wizard</field>
+            <field name="arch" type="xml">
+                <form string="New Employee" version="7.0">
+                    <header><button name="action_done" string="Insert" type="object" /></header>   
+                    <sheet>
+                        <group col="4" colspan="4">
+                            <field name="name" />
+                            <field name="email" />
+                            <field name="cost" />
+                            <field name="password" widget="password"/>
+                        </group>
+                    </sheet>        
+                </form>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="action_new_employee">
+            <field name="name">hr.new.employee</field>
+            <field name="res_model">hr.employee.new.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="view_id" ref="view_hr_employee_new_wizard_form"/>
+            <field name="context">{}</field>
+            <field name="domain">[]</field>
+        </record>
+        <menuitem 
+            parent="hr.menu_hr_main" 
+            id="menu_action_new_employee" 
+            action="action_new_employee"/>
+         
+    </data>
+</openerp>
+

@@ -57,7 +57,32 @@ class HrEmployeeNewWizard(orm.TransientModel):
         
         wiz_browse = self.browse(cr, uid, ids, context=context)[0]
         
-        # TODO
+        # Pool used:
+        user_pool = self.pool.get('res.users')
+        product_pool = self.pool.get('product.product')
+        employee_pool = self.pool.get('hr.employee')
+        
+        
+        # ---------------------------------------------------------------------
+        # A. Create res.users:
+        # ---------------------------------------------------------------------
+        user_id = user_pool.create(cr, uid, {
+            'name': wiz_browse.name,
+            
+            }, context=context)
+        
+        # ---------------------------------------------------------------------
+        # B. Create product.product:
+        # ---------------------------------------------------------------------
+        product_id = 
+        
+
+        # ---------------------------------------------------------------------
+        # C. Create hr.employee:
+        # ---------------------------------------------------------------------
+        employee_id = 
+        
+        
         return {
             'type': 'ir.actions.act_window_close'
             }

@@ -36,6 +36,7 @@
         'my_timesheet', # My timesheet
         'account', # Analytic account
         'project',
+        'analytic_new_employee', # Wizard new employee
         ],
     'init_xml': [],
     'demo': [],

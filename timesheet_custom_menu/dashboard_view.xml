@@ -103,6 +103,13 @@
                     name="Conti analitici"
                     sequence="50"
                     />
+                <menuitem 
+                    parent="menu_timesheet_dashboard_configuration" 
+                    id="menu_timesheet_new_employee" 
+                    action="analytic_new_employee.action_new_employee"
+                    name="Nuovo impiegato"
+                    sequence="60"
+                    />
                     
                 
     </data>

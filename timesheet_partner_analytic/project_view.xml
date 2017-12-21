@@ -103,7 +103,7 @@
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="view_project_new_status_progress_state_tree"/>
             <field name="context">{'search_default_progress_state_check':True}</field>
-            <field name="domain">[]</field>
+            <field name="domain">[('state', 'in', ('draft', 'open', 'pending'))]</field>
         </record>
         <menuitem 
             parent="project.menu_action_view_task" 

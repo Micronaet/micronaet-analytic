@@ -133,8 +133,7 @@ class ProjectProject(orm.Model):
             elif res[item.id]['all_progress_rate'] < 100.0:
                 res[item.id]['progress_state'] = 'yellow'
             else: # >= 100   
-                res[item.id]['progress_state'] = 'red'
-                
+                res[item.id]['progress_state'] = 'red'                
         return res
 
     # -------------------------------------------------------------------------
@@ -149,14 +148,51 @@ class ProjectProject(orm.Model):
     def _store_refresh_project_task(self, cr, uid, ids, context=None):
         ''' Change planned_manual in project.task
         '''
-        _logger.warning('Update project_id, planned_hours in project.task')
         project_ids = []
         for task in self.browse(cr, uid, ids, context=context):
             if task.project_id.id not in project_ids:
                 project_ids.append(task.project_id.id)
+        _logger.warning(
+            'Update project_id, planned_hours in project.task [%s]' % (
+                project_ids, ))
         return project_ids
-        
-        
+
+    def _store_refresh_analitic_line(self, cr, uid, ids, context=None):
+        ''' Change unit_amount in account.analytic.line hr.analytic.timesheet
+        '''
+        account_ids = []
+        for line in self.browse(cr, uid, ids, context=context):
+            if line.account_id.id not in account_ids:
+                account_ids.append(line.account_id.id)
+                
+        project_pool = self.pool.get('project.project')
+        project_ids = project_pool.search(cr, uid, [
+            ('analytic_account_id', 'in', account_ids),
+            ], context=context)
+            
+        _logger.warning('''
+            Update unit_amount, account_id 
+            in account.analytic.line or hr.analytic.timesheet
+                [account_ids # %s] - [project_ids # %s]
+                [%s]
+            ''' % (len(account_ids), len(project_ids), project_ids))
+        return project_ids
+
+    # Single position of refresh database:        
+    _store_refresh = {
+        'project.project': (
+            _store_refresh_project_project, ['planned_manual'], 10),
+        'project.task': (
+            _store_refresh_project_task, ['planned_hours', 'project_id'], 10),
+        'account.analytic.line': (
+            _store_refresh_analitic_line, [
+                'account_id', 'unit_amount'], 10),
+        'hr.analytic.timesheet': (
+            _store_refresh_analitic_line, [
+                'account_id', 'unit_amount', 'line_id'], 10),
+        # XXX hr.analytic.timesheet?
+        }
+
     _columns = {
         # instead of planned_hours
         'planned_manual': fields.float(
@@ -173,32 +209,20 @@ class ProjectProject(orm.Model):
                 
         'all_progress_rate': fields.function(
             _progress_rate_total, method=True, 
-            type='float', string='Progress rate', store=False,
+            type='float', string='Progress rate', store=_store_refresh,
             multi=True), 
         'all_planned_hours': fields.function(
             _progress_rate_total, method=True, 
-            type='float', string='Planned total', store=False,
+            type='float', string='Planned total', store=_store_refresh,
             multi=True), 
         'all_effective_hours': fields.function(
             _progress_rate_total, method=True, 
-            type='float', string='Effective total', store=False,
+            type='float', string='Effective total', store=_store_refresh,
             multi=True),
         'progress_state': fields.function(
             _progress_rate_total, method=True, 
             type='selection', selection=selection_state,
-            string='Progress state', store={
-                'project.project': (
-                    _store_refresh_project_project, 
-                    ['planned_manual'], 
-                    10,
-                    ),
-                'project.task': (
-                    _store_refresh_project_task, 
-                    ['planned_hours', 'project_id'], 
-                    10,
-                    ),              
-                },
-                # TODO     
+            string='Progress state', store=_store_refresh,
             multi=True),
         }
             

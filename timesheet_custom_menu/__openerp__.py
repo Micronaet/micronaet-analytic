@@ -32,7 +32,7 @@
         'hr', # Management
         'board', # dashboard
         'hr_timesheet', # Insert intervent
-        'timesheet_partner_analytic', # Wizard report
+        'timesheet_partner_analytic', # Wizard report (terminal project)
         'my_timesheet', # My timesheet
         'account', # Analytic account
         'project',

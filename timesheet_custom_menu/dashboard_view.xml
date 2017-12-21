@@ -61,6 +61,13 @@
                     sequence="10"
                     name="Elenco pratiche"
                     />
+                <menuitem 
+                    parent="menu_timesheet_dashboard_project" 
+                    id="menu_timesheet_dashboard_project_terminal" 
+                    action="timesheet_partner_analytic.action_project_project_warning_task_state"
+                    sequence="20"
+                    name="Pratiche a termine"
+                    />
 
 
             <menuitem 

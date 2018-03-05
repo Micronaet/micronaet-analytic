@@ -56,11 +56,11 @@
                 />
                 <menuitem 
                     parent="menu_timesheet_dashboard_project" 
-                    id="menu_timesheet_dashboard_project_project" 
-                    action="project.open_view_project_all"
+                    id="menu_timesheet_dashboard_project_project"                     
+                    action="timesheet_partner_analytic.open_view_practice_all"
                     sequence="10"
                     name="Elenco pratiche"
-                    />
+                    /><!--project.open_view_project_all"-->
                 <menuitem 
                     parent="menu_timesheet_dashboard_project" 
                     id="menu_timesheet_dashboard_project_terminal" 

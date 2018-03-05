@@ -109,6 +109,31 @@
             <field name="context">{'search_default_progress_state_check':True}</field>
             <field name="domain">[('state', 'in', ('draft', 'open', 'pending'))]</field>
         </record>
+        <!--Used in menu base not here:-->
+        <record id="open_view_practice_all" model="ir.actions.act_window">
+            <field name="name">Pratiche</field>
+            <field name="res_model">project.project</field>
+            <field name="view_type">form</field>
+            <field name="domain">[('is_practice', '=', True)]</field>
+            <field name="view_mode">kanban,tree,form,gantt</field>
+            <field name="view_id" ref="project.view_project_kanban"/>
+            <field name="search_view_id" ref="project.view_project_project_filter"/>
+            <field name="context">{'search_default_Current': 1}</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                  Click to start a new project.
+                </p><p>
+                  Projects are used to organize your activities; plan
+                  tasks, track issues, invoice timesheets. You can define
+                  internal projects (R&amp;D, Improve Sales Process),
+                  private projects (My Todos) or customer ones.
+                </p><p>
+                  You will be able collaborate with internal users on
+                  projects or invite customers to share your activities.
+                </p>
+            </field>
+        </record>
+        
         <menuitem 
             parent="project.menu_action_view_task" 
             id="menu_project_project_warning_task_state" 

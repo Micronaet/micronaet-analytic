@@ -213,7 +213,7 @@ class Parser(report_sxw.rml_parse):
         for account, ts in sorted(accounts.iteritems(), key=lambda x: (
                 x[0].partner_id.name, x[0].name)):
             partner = account.partner_id
-            mode == 'pricelist'
+            mode = 'pricelist'
             
             if previous == partner.name:
                 first = False
@@ -223,9 +223,9 @@ class Parser(report_sxw.rml_parse):
             if account in projects:
                 project = projects[account]
                 if projects[account].is_practice:
-                    mode == 'practice'
+                    mode = 'practice'
                 else:
-                    mode == 'contract'
+                    mode = 'contract'
             else:
                 project = False    
             res.append((

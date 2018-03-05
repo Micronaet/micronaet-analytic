@@ -107,8 +107,8 @@ class Parser(report_sxw.rml_parse):
                     int(timesheet.date[5:7])] += timesheet.unit_amount
         return res
 
-    def get_contract_closed(self, data):
-        ''' Task closed
+    def get_practice_closed(self, data):
+        ''' Task closed only practice!
         '''
         cr = self.cr
         uid = self.uid
@@ -118,7 +118,10 @@ class Parser(report_sxw.rml_parse):
         project_pool = self.pool.get('project.project')
         
         domain = self.get_domain(data)
-        domain.append(('state', '=', 'close'))
+        domain.extend([
+            ('state', '=', 'close'),
+            ('is_practice', '=', True),
+            ])
         
         project_ids = project_pool.search(cr, uid, domain, context=context)
         for project in project_pool.browse(cr, uid, project_ids, 
@@ -138,7 +141,7 @@ class Parser(report_sxw.rml_parse):
         # ---------------------------------------------------------------------
         # Get list of current project closed by partner:
         # ---------------------------------------------------------------------
-        self.project_closed = self.get_contract_closed(data)
+        self.practice_closed = self.get_practice_closed(data)
         
         if data is None:
             data = {}
@@ -147,7 +150,7 @@ class Parser(report_sxw.rml_parse):
         timesheet_pool = self.pool.get('hr.analytic.timesheet')
         project_pool = self.pool.get('project.project')
         
-        # Load project:
+        # Load project (link analytic account - project):
         projects = {}
         project_ids = project_pool.search(cr, uid, [], context=context)
         for project in project_pool.browse(cr, uid, project_ids, 
@@ -163,6 +166,7 @@ class Parser(report_sxw.rml_parse):
             # get list of selected items
             timesheet_ids = [obj.id for obj in objects]
         with_task = data.get('with_task', False)
+        with_project = data.get('with_project', False)
 
         # ---------------------------------------------------------------------        
         # Create accounts database (list of timesheet)
@@ -172,8 +176,18 @@ class Parser(report_sxw.rml_parse):
         for ts in timesheet_pool.browse(
                 cr, uid, timesheet_ids, context=context):                
             account = ts.account_id # Timesheet element
-            if not with_task and account in projects:
-                continue # jump task element
+            
+            # Test practice: 
+            if not with_task and account in projects and \
+                    projects[account].is_practice:
+                continue # jump practice (no contract)
+                
+            # Test practice: 
+            if not with_project and account in projects and \
+                    not projects[account].is_practice:
+                continue # jump project (no practice)
+            
+            # (always pricelist)    
             partner = account.partner_id # readability
             if partner.id not in current_partner_ids:
                 current_partner_ids.append(partner.id)
@@ -188,7 +202,7 @@ class Parser(report_sxw.rml_parse):
         # ---------------------------------------------------------------------        
         # Partner task completed test:
         # ---------------------------------------------------------------------        
-        for partner_id, projects in self.project_closed.iteritems():
+        for partner_id, projects in self.practice_closed.iteritems():
             if partner_id not in current_partner_ids:                
                 # Create empty record for generate a partner in list
                 accounts[projects[0].analytic_account_id] = []

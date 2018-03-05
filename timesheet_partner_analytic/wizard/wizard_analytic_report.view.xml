@@ -18,9 +18,12 @@
                         <group colspan="4" col="4" attrs="{'invisible': [('report_type', '!=', 'analytic')]}">
                             <field name="account_id" />
                             <field name="partner_id" invisible="1" /> <!--TODO-->
+                            
                             <field name="from_date" />
                             <field name="to_date" />
+                            
                             <field name="with_task" />
+                            <field name="with_project" />
                         </group>
                         <group colspan="4" col="4" attrs="{'invisible': [('report_type', '!=', 'timesheet')]}">
                             <field name="month" attrs="{'required': [('report_type', '=', 'timesheet')]}"/>

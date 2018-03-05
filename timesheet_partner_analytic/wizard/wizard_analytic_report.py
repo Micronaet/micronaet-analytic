@@ -67,6 +67,7 @@ class mrp_production_status_wizard(osv.osv_memory):
         datas['year'] = wiz_proxy.year or False
         datas['month'] = wiz_proxy.month or False
         datas['with_task'] = wiz_proxy.with_task
+        datas['with_project'] = wiz_proxy.with_project
         #datas['partner_id'] = wiz_proxy.partner_id.id or False
 
         return {
@@ -101,7 +102,8 @@ class mrp_production_status_wizard(osv.osv_memory):
             ('12', 'December'),
             ], 'Month'),
         'year': fields.integer('Year'),        
-        'with_task': fields.boolean('With task'),
+        'with_task': fields.boolean('Con pratiche'),
+        'with_project': fields.boolean('Con contratti'),
         }
         
     _defaults = {

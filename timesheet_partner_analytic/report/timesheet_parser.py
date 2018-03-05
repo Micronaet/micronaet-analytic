@@ -44,7 +44,7 @@ class Parser(report_sxw.rml_parse):
     def get_list_partner_task_closed(self, partner_id):
         ''' get partner project list for partner passed
         '''
-        return self.project_closed.get(partner_id, [])
+        return self.practice_closed.get(partner_id, [])
         
     def get_domain(self, data):
         ''' Domain composition

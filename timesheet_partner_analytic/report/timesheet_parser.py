@@ -33,7 +33,7 @@ class Parser(report_sxw.rml_parse):
         self.localcontext.update({
             # Analytic report:
             'get_objects': self.get_objects,
-            'get_contract_closed': self.get_contract_closed,
+            'get_contract_closed': self.get_practice_closed, # XXX used?
             'get_hour_format': self.get_hour_format,
             'get_list_partner_task_closed': self.get_list_partner_task_closed,
             

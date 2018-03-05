@@ -195,6 +195,7 @@ class ProjectProject(orm.Model):
 
     _columns = {
         # instead of planned_hours
+        'is_practice': fields.boolean('Pratica'),
         'planned_manual': fields.float(
             'Planned H. manual', digits=(16, 3)),
         

@@ -112,12 +112,20 @@
                     />
                 <menuitem 
                     parent="menu_timesheet_dashboard_configuration" 
+                    id="menu_timesheet_dashboard_invoiced_lines" 
+                    action="account_analytic_analysis.action_hr_tree_invoiced_all"
+                    name="Righe da fatturare"
+                    sequence="60"
+                    />
+                    
+                <menuitem 
+                    parent="menu_timesheet_dashboard_configuration" 
                     id="menu_timesheet_new_employee" 
                     action="analytic_new_employee.action_new_employee"
                     name="Nuovo impiegato"
                     sequence="60"
                     />
-                    
+                
                 
     </data>
 </openerp>

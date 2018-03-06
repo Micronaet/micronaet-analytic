@@ -37,7 +37,7 @@
         'account', # Analytic account
         'project',
         'analytic_new_employee', # Wizard new employee
-        'action_hr_tree_invoiced_all',
+        'account_analytic_analysis',
         ],
     'init_xml': [],
     'demo': [],

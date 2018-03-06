@@ -38,6 +38,7 @@
         'project',
         'analytic_new_employee', # Wizard new employee
         'account_analytic_analysis',
+        'account',        
         ],
     'init_xml': [],
     'demo': [],

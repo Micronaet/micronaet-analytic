@@ -69,7 +69,35 @@
                     name="Pratiche a termine"
                     />
 
+            <menuitem 
+                parent="menu_timesheet_dashboard" 
+                id="menu_timesheet_dashboard_account_configuration" 
+                name="Contabilita"
+                sequence="80"
+                />
+                <menuitem 
+                    parent="menu_timesheet_dashboard_account_configuration" 
+                    id="menu_timesheet_dashboard_account_invoice" 
+                    action="account.action_invoice_tree1"
+                    name="Fatture"
+                    sequence="10"
+                    />
+                <menuitem 
+                    parent="menu_timesheet_dashboard_account_configuration" 
+                    id="menu_timesheet_dashboard_account_credit" 
+                    action="account.action_invoice_tree3"
+                    name="Note di credito"
+                    sequence="20"
+                    />                
+                <menuitem 
+                    parent="menu_timesheet_dashboard_account_configuration" 
+                    id="menu_timesheet_dashboard_invoiced_lines" 
+                    action="account_analytic_analysis.action_hr_tree_invoiced_all"
+                    name="Righe da fatturare"
+                    sequence="30"
+                    />
 
+                    
             <menuitem 
                 parent="menu_timesheet_dashboard" 
                 id="menu_timesheet_dashboard_configuration" 
@@ -110,14 +138,7 @@
                     name="Conti analitici"
                     sequence="50"
                     />
-                <menuitem 
-                    parent="menu_timesheet_dashboard_configuration" 
-                    id="menu_timesheet_dashboard_invoiced_lines" 
-                    action="account_analytic_analysis.action_hr_tree_invoiced_all"
-                    name="Righe da fatturare"
-                    sequence="60"
-                    />
-                    
+
                 <menuitem 
                     parent="menu_timesheet_dashboard_configuration" 
                     id="menu_timesheet_new_employee" 
@@ -125,6 +146,7 @@
                     name="Nuovo impiegato"
                     sequence="60"
                     />
+                   
                 
                 
     </data>
